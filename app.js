@@ -62,6 +62,8 @@
       ], { duration: rand(1000, 1400), easing: 'cubic-bezier(.22,1,.36,1)' }).onfinish = () => { img.remove(); live--; };
     }
   }
+  // While anything is dragged, no text on the page can be selected.
+  const dragMode = on => document.documentElement.classList.toggle('is-dragging', on);
   const centerOf = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
 
   // Click on empty space anywhere: reactions pop out.
@@ -140,8 +142,25 @@
         img.style.transform = `translate(${b.position.x - h}px,${b.position.y - h}px) rotate(${b.angle}rad)`;
       }
     }
+    // Scrolling jostles the pile: every so often, a scroll burst makes the emoji hop.
+    let lastScroll = scrollY, shake = 0, lastKick = 0;
+    function jostle() {
+      const now = performance.now();
+      shake = shake * .9 + Math.abs(scrollY - lastScroll);
+      lastScroll = scrollY;
+      if (shake < 50 || now - lastKick < 260) return;
+      const m = Math.min(1, shake / 320);
+      for (const { b } of items) {
+        if (Math.random() > .75) continue;
+        Body.setVelocity(b, { x: b.velocity.x + rand(-1.6, 1.6) * m, y: b.velocity.y - rand(2.5, 7.5) * m });
+        Body.setAngularVelocity(b, b.angularVelocity + rand(-.08, .08) * m);
+      }
+      shake = 0;
+      lastKick = now;
+    }
     function frame() {
       if (!running) return;
+      jostle();
       Engine.update(engine, 1000 / 60);
       render();
       requestAnimationFrame(frame);
@@ -184,6 +203,8 @@
       if (e.target.closest('a, button')) return;
       const p = pt(e), b = hit(p);
       if (!b) return;
+      e.preventDefault();
+      dragMode(true);
       const c = Constraint.create({ pointA: p, bodyB: b, pointB: { x: p.x - b.position.x, y: p.y - b.position.y }, stiffness: .1, damping: .1, length: 0 });
       Composite.add(world, c);
       drag = { c, b, id: e.pointerId, p0: p, moved: false };
@@ -203,6 +224,7 @@
       if (!drag || e.pointerId !== drag.id) return;
       Composite.remove(world, drag.c);
       host.classList.remove('grabbing');
+      dragMode(false);
       if (!drag.moved) {
         // A tap on an emoji: it hops and throws off copies of itself.
         Body.setVelocity(drag.b, { x: rand(-4, 4), y: -16 });
@@ -242,6 +264,7 @@
       try { el.setPointerCapture(e.pointerId); } catch (_) {}
       el.classList.remove('springback');
       el.classList.add('dragging');
+      dragMode(true);
     });
     el.addEventListener('pointermove', e => {
       if (!s || e.pointerId !== s.id) return;
@@ -253,6 +276,7 @@
       if (!s || e.pointerId !== s.id) return;
       el.classList.remove('dragging');
       el.classList.add('springback');
+      dragMode(false);
       el.style.transform = '';
       if (!s.moved) {
         const name = Object.keys(PATH).find(k => el.src && el.src.endsWith(PATH[k]));
@@ -264,6 +288,43 @@
     el.addEventListener('pointerup', end);
     el.addEventListener('pointercancel', end);
   });
+
+  /* ───────── Decorations drift when the page is still and bounce when it scrolls ───────── */
+  if (!RM) {
+    const deco = $$('[data-drag]').map(el => ({
+      el, on: false, y: 0, v: 0, k: rand(.7, 1.3),
+      p: [rand(0, 6.3), rand(0, 6.3), rand(0, 6.3)], w: [rand(.45, .75), rand(.55, .85), rand(.35, .6)]
+    }));
+    const decoIO = new IntersectionObserver(ens => ens.forEach(en => {
+      deco.find(d => d.el === en.target).on = en.isIntersecting;
+    }));
+    deco.forEach(d => decoIO.observe(d.el));
+    let lastY = scrollY, lastAct = 0, calm = 0;
+    const act = () => (lastAct = performance.now());
+    addEventListener('scroll', act, { passive: true });
+    addEventListener('pointermove', act, { passive: true });
+    addEventListener('keydown', act);
+    (function tick(t) {
+      const sv = scrollY - lastY;
+      lastY = scrollY;
+      // calm eases from 0 (someone is scrolling or moving the pointer) to 1 (page left alone).
+      calm += (Math.min(1, Math.max(0, (t - lastAct - 500) / 1500)) - calm) * .04;
+      const amp = .3 + .7 * calm, s = t / 1000;
+      for (const d of deco) {
+        if (!d.on) continue;
+        // A damped spring that trails the scroll and overshoots when it stops.
+        d.v += (Math.max(-34, Math.min(34, sv * d.k)) - d.y) * .09;
+        d.v *= .8;
+        d.y += d.v;
+        const x = Math.sin(s * d.w[0] + d.p[0]) * 7 * amp;
+        const y = Math.sin(s * d.w[1] * 1.4 + d.p[1]) * 9 * amp + d.y;
+        const r = Math.sin(s * d.w[2] + d.p[2]) * 5 * amp + d.y * .3;
+        d.el.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
+        d.el.style.rotate = `${r.toFixed(2)}deg`;
+      }
+      requestAnimationFrame(tick);
+    })(0);
+  }
 
   /* ───────── Scroll reveal ───────── */
   const riseIO = new IntersectionObserver(ens => {
@@ -512,6 +573,7 @@
     a.addEventListener('pointermove', e => {
       if (!s || e.pointerId !== s.id) return;
       if (!ghost && Math.hypot(e.clientX - s.x, e.clientY - s.y) > 6) {
+        dragMode(true);
         ghost = a.cloneNode(true);
         ghost.classList.add('ghost');
         document.body.appendChild(ghost);
@@ -525,6 +587,7 @@
     });
     const end = e => {
       if (!s || e.pointerId !== s.id) return;
+      dragMode(false);
       if (ghost) {
         ghost.remove(); ghost = null;
         if (over) { over.classList.remove('over'); fill(over, a); over = null; }
