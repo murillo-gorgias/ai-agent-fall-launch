@@ -1,0 +1,11 @@
+/* Version switcher: a slim bar above each version of the page. Shared by v1 and v2. */
+.vbar {
+  position: relative; z-index: 30; height: 40px; display: flex; align-items: center; justify-content: center;
+  background: #1b1a19; font: 500 12px/1 "Red Hat Mono", ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase;
+}
+.vbar nav { display: flex; gap: 4px; padding: 3px; border-radius: 99px; background: rgba(252, 250, 248, .08); }
+.vbar a { padding: 7px 14px; border-radius: 99px; color: #c0bbb5; transition: background .2s, color .2s; }
+.vbar a:hover { color: #fcfaf8; }
+.vbar a[aria-current=page] { background: #fcfaf8; color: #1b1a19; }
+/* The nav sits absolutely at the top of the page, so it moves down by the bar's height. */
+.vbar ~ .nav { top: 40px; }

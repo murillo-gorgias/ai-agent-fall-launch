@@ -10,11 +10,11 @@
   // Every image the page can spawn, by short name.
   const PATH = {};
   'wink heart thumbs laugh cool typing hearteyes wow fire party clap sparkle monocle calm grin stars thinking tongue'
-    .split(' ').forEach(n => (PATH[n] = `assets/emoji/${n}.webp`));
+    .split(' ').forEach(n => (PATH[n] = `../assets/emoji/${n}.webp`));
   'gift bag parcel phone bolt search bulb wand gear sprout rocket clipboard'
-    .split(' ').forEach(n => (PATH[n] = `assets/objects/${n}.webp`));
+    .split(' ').forEach(n => (PATH[n] = `../assets/objects/${n}.webp`));
   'wa-bubble wa-phone ig-heart ig-camera fb-thumbs fb-bubble'
-    .split(' ').forEach(n => (PATH[n] = `assets/channels/${n}.webp`));
+    .split(' ').forEach(n => (PATH[n] = `../assets/channels/${n}.webp`));
   const REACT = ['heart', 'thumbs', 'laugh', 'wow', 'fire', 'hearteyes', 'party', 'clap', 'sparkle', 'wink', 'cool', 'stars'];
 
   // ":name:" in copy becomes an inline 3D emoji.
@@ -443,67 +443,6 @@
     });
   });
 
-  /* ───────── Mesh gradient (hero + tone) ─────────
-   * The Figma "Mesh gradient" fill: a 4x4 grid of colour points blended with Catmull-Rom curves in linear light.
-   * Drawn on a tiny canvas that CSS stretches and blurs. Each inner point drifts slowly towards a neighbour's colour. */
-  const MESH = [
-    [1, .592, .502], [1, .592, .502], [1, .847, .588], [.962, .739, .369],
-    [.780, .800, .992], [.780, .800, .992], [.969, .820, .984], [.969, .820, .984],
-    [.969, .820, .984], [.820, .914, .988], [1, .710, .647], [1, .592, .502],
-    [.962, .739, .369], [1, .912, .762], [.780, .800, .992], [.780, .800, .992]
-  ];
-  const toLin = v => (v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
-  const toSrgb = v => (v <= .0031308 ? v * 12.92 : 1.055 * v ** (1 / 2.4) - .055);
-  const LIN = MESH.map(c => c.map(toLin));
-  const cat = (a, b, c, d, t) => .5 * (2 * b + (-a + c) * t + (2 * a - 5 * b + 4 * c - d) * t * t + (-a + 3 * b - 3 * c + d) * t * t * t);
-  // Each point swaps a little colour with a partner, on its own slow clock.
-  const PARTNER = [1, 2, 3, 2, 5, 6, 7, 6, 9, 10, 11, 10, 13, 14, 15, 14];
-  const SPEED = LIN.map((_, i) => .00011 + (i % 5) * .000023);
-  function meshColours(t) {
-    return LIN.map((c, i) => {
-      const k = .38 * (.5 - .5 * Math.cos(t * SPEED[i] + i * 1.7));
-      const o = LIN[PARTNER[i]];
-      return [c[0] + (o[0] - c[0]) * k, c[1] + (o[1] - c[1]) * k, c[2] + (o[2] - c[2]) * k];
-    });
-  }
-  function drawMesh(cv, t) {
-    const W = cv.width, H = cv.height, ctx = cv.getContext('2d'), img = ctx.createImageData(W, H), px = img.data;
-    const P = meshColours(t);
-    const seg = v => { const s = Math.min(v * 3, 2.9999), i = Math.floor(s); return [i, s - i]; };
-    for (let y = 0; y < H; y++) {
-      const [iy, ty] = seg(y / (H - 1));
-      const rows = [iy - 1, iy, iy + 1, iy + 2].map(r => Math.min(Math.max(r, 0), 3));
-      for (let x = 0; x < W; x++) {
-        const [ix, tx] = seg(x / (W - 1));
-        const cols = [ix - 1, ix, ix + 1, ix + 2].map(c => Math.min(Math.max(c, 0), 3));
-        const o = (y * W + x) * 4;
-        for (let ch = 0; ch < 3; ch++) {
-          const r = rows.map(rr => cat(...cols.map(cc => P[rr * 4 + cc][ch]), tx));
-          px[o + ch] = 255 * toSrgb(Math.min(Math.max(cat(...r, ty), 0), 1));
-        }
-        px[o + 3] = 255;
-      }
-    }
-    ctx.putImageData(img, 0, 0);
-  }
-  const meshes = $$('canvas[data-mesh]').map(cv => { cv.width = 72; cv.height = 42; drawMesh(cv, 0); return { cv, seen: false }; });
-  if (!RM && meshes.length) {
-    const meshIO = new IntersectionObserver(ens => ens.forEach(en => {
-      const m = meshes.find(m => m.cv === en.target);
-      if (m) m.seen = en.isIntersecting;
-    }));
-    meshes.forEach(m => meshIO.observe(m.cv));
-    let last = 0;
-    (function tick(now) {
-      // About 20 redraws a second is plenty for a change this slow.
-      if (now - last > 50) {
-        last = now;
-        meshes.forEach(m => { if (m.seen && getComputedStyle(m.cv.parentNode).opacity !== '0') drawMesh(m.cv, now); });
-      }
-      requestAnimationFrame(tick);
-    })(0);
-  }
-
   /* ───────── Tone of voice slider ───────── */
   const TONES = [
     ['Formal', "I'm sorry to hear that. I have opened a delivery investigation for order #4821, and you will receive an update within 24 hours. If the parcel does not arrive, we will send a replacement at no cost."],
@@ -518,7 +457,6 @@
     faces.forEach((f, k) => f.classList.toggle('on', k === i));
     stops.forEach((s, k) => s.classList.toggle('on', k === i));
     $('.tone-name').textContent = TONES[i][0];
-    $('#tone').dataset.tone = i;
     const parts = TONES[i][1].split(/(:[a-z-]+:)/).flatMap(p => (/^:[a-z-]+:$/.test(p) ? [emojify(p)] : [...p]));
     if (!animate || RM) { reply.innerHTML = parts.join(''); return; }
     reply.innerHTML = '';
@@ -533,7 +471,7 @@
     if (i === 3) burst(...centerOf(reply), { names: ['tongue', 'laugh', 'party', 'stars', 'fire'], n: 8, spread: 200 });
   }
   range.addEventListener('input', () => setTone(+range.value));
-  setTone(+range.value, false);
+  setTone(1, false);
   new IntersectionObserver(([en], o) => { if (en.isIntersecting) { o.disconnect(); setTone(+range.value); } }, { threshold: .5 }).observe(reply);
 
   /* ───────── Gaia ───────── */
