@@ -34,11 +34,12 @@
   const P = (t, t0, d, e = E.out) => e(clamp((t - t0) / d));
 
   /* ───────── Bubble emoji: every one the page can spawn, by name ───────── */
-  const PATH = {};
-  'smile calm laugh relieved wow love wink tongue cool stars party thinking hug concerned uhoh heart thumbs sparkle typing check'
-    .split(' ').forEach(n => (PATH[n] = `assets/v3/emoji/${n}.svg`));
+  // Large (56 px drawing) for anything 32 px and up; Small (24 px drawing, bigger features) for 28 px and below.
+  const PATH = {}, SMALL = {};
+  'smile calm laugh relieved wow love wink tongue cool stars party thinking hug polite concerned uhoh heart thumbs sparkle typing check'
+    .split(' ').forEach(n => { PATH[n] = `assets/v3/emoji/${n}.svg`; SMALL[n] = `assets/v3/emoji/${n}-sm.svg`; });
   const REACT = ['heart', 'thumbs', 'laugh', 'wow', 'love', 'smile', 'party', 'stars', 'sparkle', 'wink', 'hug', 'check'];
-  const emojify = html => html.replace(/:([a-z-]+):/g, (m, n) => (PATH[n] ? `<img class="ie" src="${PATH[n]}" alt="">` : m));
+  const emojify = html => html.replace(/:([a-z-]+):/g, (m, n) => (SMALL[n] ? `<img class="ie" src="${SMALL[n]}" alt="">` : m));
   $$('[data-chat] .msg, [data-type]').forEach(el => (el.innerHTML = emojify(el.innerHTML)));
 
   /* ───────── Line icons for UI rows (no 3D objects in this version) ───────── */
@@ -62,7 +63,7 @@
   const toastEl = $('.toast');
   let toastT;
   function toast(text, img) {
-    toastEl.innerHTML = (img ? `<img src="${PATH[img]}" alt="">` : '') + text;
+    toastEl.innerHTML = (img ? `<img src="${SMALL[img]}" alt="">` : '') + text;
     toastEl.classList.add('on');
     clearTimeout(toastT);
     toastT = setTimeout(() => toastEl.classList.remove('on'), 2200);
@@ -108,7 +109,7 @@
   });
 
   /* ═════════════════════ Glass flower ═════════════════════
-     The AI Agent flower sits in every tinted card, as in the Figma design: a white fade (24%) and an edge
+     The AI Agent flower sits in the hero's blue card, as in the Figma design: a white fade (24%) and an edge
      lit like Figma's Glass effect, bright where the edge faces the light, weaker on the far side, gone in
      between. The outline is sampled once. Each frame the light turns a little and each edge segment is re-lit. */
   const FLOWER_D = 'M901.667 700.925C870.969 700.925 840.015 704.749 809.536 712.287C807.569 695.536 806.55 678.639 806.55 661.997C806.55 645.355 807.569 628.604 809.572 611.707C840.052 619.245 871.005 623.069 901.667 623.069C1015.47 623.069 1119.21 570.74 1165.97 489.715C1196.12 437.496 1196.78 381.125 1167.86 331.017C1138.91 280.873 1089.75 253.27 1029.41 253.27C973.515 253.27 912.082 277.85 860.918 320.711C806.185 366.558 766.42 428.756 745.59 500.931C729.786 494.122 714.965 486.729 700.544 478.39C686.051 470.015 672.249 460.911 658.484 450.678C767.767 337.135 779.202 192.638 742.968 105.204C715.22 38.3455 661.143 0 594.502 0C527.862 0 473.821 38.3455 446.109 105.204C425.462 155.021 421.674 215.907 435.367 276.721C449.896 340.958 482.743 400.935 530.557 450.642C516.828 460.911 502.99 470.015 488.533 478.39C474.258 486.62 459.146 494.195 443.524 500.931C397.094 339.975 263.485 253.27 159.628 253.27C99.3245 253.27 50.1635 280.873 21.2132 330.98C-7.70067 381.088 -7.04519 437.459 23.1433 489.715C69.9007 570.74 173.685 623.069 287.483 623.069C318.145 623.069 349.062 619.282 379.542 611.744C381.508 628.568 382.491 645.428 382.491 661.997C382.491 678.566 381.508 695.39 379.505 712.251C349.025 704.713 318.072 700.925 287.41 700.925C173.612 700.925 69.8643 753.254 23.1068 834.242C-7.04519 886.499 -7.70067 942.87 21.2132 992.978C50.1635 1043.09 99.3244 1070.72 159.665 1070.72C215.563 1070.72 276.996 1046.11 328.196 1003.25C382.892 957.4 422.658 895.238 443.487 823.063C459.292 829.836 474.076 837.265 488.497 845.64C502.917 853.943 517.047 863.266 530.557 873.316C421.274 986.86 409.876 1131.32 446.146 1218.79C473.858 1285.69 527.935 1324.03 594.539 1324.03C661.143 1323.99 715.256 1285.65 742.968 1218.79C763.579 1168.97 767.403 1108.09 753.674 1047.27C739.181 983.036 706.334 923.023 658.484 873.316C672.067 863.193 686.196 853.87 700.544 845.604C714.965 837.265 729.749 829.873 745.554 823.063C791.947 983.947 925.555 1070.69 1029.41 1070.72C1089.72 1070.72 1138.88 1043.12 1167.79 993.014C1196.74 942.906 1196.05 886.535 1165.9 834.279C1119.14 753.291 1015.43 700.925 901.631 700.925H901.667ZM1029.34 340.23C1049.7 340.23 1077.34 346.056 1093.43 373.987C1109.53 401.845 1100.79 428.683 1090.63 446.308C1060.07 499.22 981.016 536.218 898.426 536.218C874.719 536.218 850.867 533.305 827.416 527.551C854.436 436.258 937.682 340.23 1029.34 340.23ZM290.651 536.182C208.061 536.218 129.003 499.256 98.4505 446.345C88.2906 428.72 79.5508 401.881 95.6465 373.987C111.742 346.056 139.381 340.23 159.738 340.23C251.396 340.23 334.641 436.258 361.662 527.551C338.21 533.268 314.358 536.182 290.651 536.182ZM238.14 960.022C211.229 975.535 184.136 983.728 159.701 983.728C139.381 983.728 111.742 977.902 95.6465 950.007C79.5508 922.113 88.2906 895.275 98.4505 877.686C129.003 824.738 208.025 787.776 290.651 787.776C314.358 787.776 338.246 790.69 361.698 796.443C341.16 866.98 296.405 926.337 238.14 960.022ZM533.251 124.577C543.448 106.952 562.311 85.977 594.539 85.977C624.399 85.977 648.543 104.549 662.49 138.27C689.183 202.761 674.07 310.151 594.466 393.105C577.788 375.699 563.331 356.508 551.496 335.969C510.2 264.413 502.662 177.489 533.215 124.577H533.251ZM655.826 1199.45C645.63 1217.08 626.766 1238.09 594.539 1238.09C564.678 1238.09 540.535 1219.48 526.551 1185.76C499.822 1121.27 514.934 1013.84 594.539 930.853C611.253 948.296 625.674 967.487 637.545 988.025C678.877 1059.58 686.379 1146.54 655.826 1199.45ZM725.853 737.851C702.62 747.209 679.678 758.425 657.574 771.171C635.324 784.025 614.13 798.3 594.539 813.668C575.02 798.373 553.826 784.098 531.503 771.171C509.217 758.316 486.275 747.137 463.188 737.814C466.684 713.015 468.468 687.524 468.468 661.997C468.468 636.47 466.72 610.797 463.224 586.144C486.312 576.821 509.254 565.642 531.503 552.824C553.535 540.115 574.692 525.84 594.502 510.363C614.276 525.803 635.47 540.078 657.574 552.824C679.715 565.605 702.693 576.785 725.853 586.144C722.393 611.016 720.609 636.506 720.609 661.997C720.609 687.488 722.357 713.197 725.853 737.851ZM1093.39 950.044C1077.3 977.938 1049.66 983.764 1029.34 983.764H1029.3C937.682 983.764 854.4 887.737 827.379 796.443C850.831 790.69 874.683 787.776 898.39 787.776C981.016 787.776 1060.07 824.738 1090.59 877.65C1100.79 895.275 1109.53 922.149 1093.39 950.044Z';
@@ -180,13 +181,8 @@
     flowers.push(f); flowerIO.observe(host);
     return f;
   }
-  $$('[data-flower]').forEach(card => { const [x, y, s] = card.dataset.flower.split(',').map(Number); makeFlower(card, x, y, s); });
   let flowerRZ;
   addEventListener('resize', () => { clearTimeout(flowerRZ); flowerRZ = setTimeout(() => flowers.forEach(f => f.size()), 120); });
-  if (!RM) (function glow(now) {
-    for (const f of flowers) if (f.on && !f.manual) paintRim(f, lightAt(now / 1000) + f.phase);
-    requestAnimationFrame(glow);
-  })(0);
 
   /* ═════════════════════ Hero ═════════════════════
      Built from the Figma flow. One master clock drives everything, so any moment can be frozen:
@@ -633,7 +629,7 @@
   function react(msg, name) {
     let rx = $('.rx', msg);
     if (!rx) { rx = document.createElement('span'); rx.className = 'rx'; msg.appendChild(rx); }
-    rx.innerHTML = `<img src="${PATH[name]}" alt="">`;
+    rx.innerHTML = `<img src="${SMALL[name]}" alt="">`;
     rx.style.animation = 'none'; rx.offsetWidth; rx.style.animation = '';
     msg.classList.add('reacted');
     bump();
@@ -645,7 +641,7 @@
       if ($('.picker', msg) || msg.classList.contains('is-typing')) return;
       const p = document.createElement('div');
       p.className = 'picker';
-      p.innerHTML = ['thumbs', 'heart', 'laugh', 'wow', 'love'].map(n => `<button data-n="${n}" aria-label="${n}"><img src="${PATH[n]}" alt=""></button>`).join('');
+      p.innerHTML = ['thumbs', 'heart', 'laugh', 'wow', 'love'].map(n => `<button data-n="${n}" aria-label="${n}"><img src="${SMALL[n]}" alt=""></button>`).join('');
       p.addEventListener('click', e => {
         const b = e.target.closest('button');
         if (!b) return;
@@ -864,7 +860,6 @@
     $$('.seg button').forEach(o => o.setAttribute('aria-pressed', o === b));
     mlt.dataset.mode = b.dataset.mode;
     row.classList.remove('open');
-    requestAnimationFrame(() => flowers.forEach(f => f.host === mlt && f.size()));
   }));
   new IntersectionObserver(async ([en], o) => {
     if (!en.isIntersecting) return;
