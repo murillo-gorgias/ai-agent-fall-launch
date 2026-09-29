@@ -6,7 +6,7 @@
 <title>AI Agent Fall Launch | Gorgias</title>
 <meta name="description" content="Design concept for the Gorgias AI Agent fall 2026 launch page: AI Agent on WhatsApp, Instagram and Facebook, Tone of Voice, Gaia, and Actions in Skills.">
 <!--
-  Design concept, not a production page.
+  Design concept, not a production page. Version 3.
   PLACEHOLDERS: the phone number (415) 555-0130, the Socials testimonial (Jordan Ellis, Northbound Outdoor),
   every store, shopper and product name, and all numbers in the Gaia Hub mock are invented.
 -->
@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<div class="vbar"><nav aria-label="Page version"><a href="v1/">Version 1</a><a href="./" aria-current="page">Version 2</a></nav></div>
+<div class="vbar"><nav aria-label="Page version"><a href="v1/">Version 1</a><a href="v2/">Version 2</a><a href="./" aria-current="page">Version 3</a></nav></div>
 
 <!-- ───────────────────────── Nav ───────────────────────── -->
 <header class="nav">
@@ -36,124 +36,160 @@
 
 <main>
 
-<!-- ───────────────────────── Hero ───────────────────────── -->
-<section class="hero pile-host" id="top" data-pile="hero">
-  <div class="mesh" aria-hidden="true"><canvas data-mesh></canvas></div>
-  <div class="hero-copy" data-solid>
-    <div class="tag"><span class="dot"></span>AI Agent · Fall 2026 release</div>
-    <h1 class="display hero-title">Your AI Agent just slid into the DMs.</h1>
-    <p class="lead hero-sub">AI Agent now answers, sells and resolves on WhatsApp, Instagram and Facebook. Same knowledge, same skills, in the apps your customers already open fifty times a day.</p>
-    <div class="hero-cta">
-      <a class="btn btn-primary btn-lg" href="#close">Book a demo</a>
-      <a class="btn btn-ghost btn-lg" href="#promo"><img class="ie" src="assets/objects/gift.webp" alt=""> Text us for a free 30 days</a>
+<!-- ───────────────────────── Hero ─────────────────────────
+     One seekable clock drives the whole sequence (app.js, "Hero"). -->
+<section class="hero" id="top">
+  <div class="hero-compact-copy" data-copy-slot></div>
+  <div class="stage-box">
+    <div class="stage">
+
+      <div class="hero-copy" data-hero-copy>
+        <div class="copy-head">
+          <div class="tag" data-rv="0"><span class="dot"></span>Fall 2026 release</div>
+          <h1 class="display h1"><span data-rv="0.09">Your AI Agent just</span> <span data-rv="0.18">slid into the DMs.</span></h1>
+        </div>
+        <p class="lead" data-rv="0.3">AI Agent now answers, sells and resolves on WhatsApp, Instagram and Facebook. Same knowledge, same skills, in the apps your customers already open fifty times a day.</p>
+        <div class="ctas" data-rv="0.42">
+          <a class="btn btn-primary btn-lg" href="#close">Book a demo</a>
+          <a class="btn btn-ghost btn-lg" href="#promo"><img class="ie" src="assets/v3/emoji/party.svg" alt="">Text us for a free 30 days</a>
+        </div>
+      </div>
+
+      <div class="blue" id="blue" aria-hidden="true">
+        <div class="rig" id="rig">
+          <div class="el phone" id="phone"></div>
+          <div class="el clock" id="clock"><p>Wednesday, October 14</p><b>9:41</b></div>
+          <div id="groups"></div>
+          <div class="el ai" id="ai">
+            <div class="cbg"></div>
+            <div class="cmsg">
+              <span class="tile"><img id="aiFlower" src="assets/v3/ai-agent-icon.svg" alt=""></span>
+              <div class="tx"><div class="top"><b>AI Agent</b><em>now</em></div><p><span id="aiBusy">Replying to 556 messages...</span><span id="aiDone" style="opacity:0">Inbox is clean!</span></p></div>
+            </div>
+          </div>
+          <div class="el pill" id="pill"><span class="badge solo">99+</span>more messages</div>
+          <div class="el island" id="island"></div>
+        </div>
+        <button class="replay" id="replay" type="button"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4"/><path d="M2.5 2.5v3h3"/></svg>Replay</button>
+      </div>
+
     </div>
   </div>
-  <p class="hero-hint kicker" aria-hidden="true">Grab an emoji. Throw it. Click anywhere.</p>
-  <div class="pile-layer" aria-hidden="true"></div>
 </section>
 
 <!-- ───────────────────────── Promo ───────────────────────── -->
-<section class="promo band blush" id="promo">
-  <div class="wrap promo-in">
-    <div class="promo-copy rise">
+<section class="section promo" id="promo">
+  <div class="wrap split">
+    <div class="copy-col rise">
       <div class="tag"><span class="dot"></span>Launch offer</div>
-      <div class="promo-bubble">
-        <h2 class="display promo-title">Text us for a free 30 days.</h2>
-        <p>Send one message from your phone. Our own AI Agent answers, starts your trial on WhatsApp, Instagram and Facebook, and books a walkthrough if you want one. No forms.</p>
-        <div class="promo-actions">
-          <button class="btn btn-wa btn-lg" data-copy="+1 (415) 555-0130"><img class="ie" src="assets/channels/wa-bubble.webp" alt=""> Text on WhatsApp</button>
-          <button class="btn btn-primary btn-lg" data-copy="+1 (415) 555-0130">Text (415) 555-0130</button>
-        </div>
-        <p class="fine">Standard messaging rates may apply. Trial covers AI Agent on social channels.</p>
+      <h2 class="display h2">Text us for a free 30 days.</h2>
+      <p class="lead">Send one message from your phone. Our own AI Agent answers, starts your trial on WhatsApp, Instagram and Facebook, and books a walkthrough if you want one. No forms.</p>
+      <div class="ctas">
+        <button class="btn btn-wa btn-lg" data-copy="+1 (415) 555-0130"><img class="ie wa-ie" src="assets/v3/wa-glyph.svg" alt="">Text on WhatsApp</button>
+        <button class="btn btn-primary btn-lg" data-copy="+1 (415) 555-0130">Text (415) 555-0130</button>
       </div>
-      <img class="promo-gift float-me" src="assets/objects/gift.webp" alt="" data-drag>
+      <p class="fine">Standard messaging rates may apply. Trial covers AI Agent on social channels.</p>
     </div>
 
-    <div class="mchat rise" aria-label="Example text conversation with Gorgias">
-      <div class="mchat-head"><img src="assets/logos/brand-symbol-black.svg" alt=""><span>Gorgias</span></div>
-      <div class="chat chat-min" data-chat>
-        <div class="msg out">hey, is the 30 days free thing real?</div>
-        <div class="msg in" data-ai>Real! 30 days of AI Agent on WhatsApp, Instagram and Facebook, on us.</div>
-        <div class="msg in" data-ai>Want me to activate your trial now?</div>
-        <div class="msg out">yes please!</div>
+    <div class="stage-wrap rise">
+      <img class="floater" src="assets/v3/emoji/party.svg" alt="" style="--x:-40px;--y:-44px;--s:96px;--r:-10deg" data-drag>
+      <div class="stage-card coral" data-flower="-300,-60,.95">
+      <div class="gphone promo-phone">
+        <div class="gphone-head"><span class="brand-tile"><img src="assets/logos/brand-symbol-black.svg" alt=""></span><div><strong>Gorgias</strong><span>Text message</span></div></div>
+        <div class="chat chat-sms" data-chat>
+          <div class="msg out">hey, is the 30 days free thing real?</div>
+          <div class="msg in" data-ai>Real! 30 days of AI Agent on WhatsApp, Instagram and Facebook, on us :party:</div>
+          <div class="msg in" data-ai>Want me to activate your trial now?</div>
+          <div class="msg out">yes please!</div>
+          <div class="msg in" data-ai>Done. Check your inbox for the login link :check:</div>
+        </div>
+      </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="divider" aria-hidden="true" data-divider="heart,thumbs,laugh,wow,fire,wink,hearteyes,clap,cool,party,sparkle,stars"></div>
+<div class="divider" aria-hidden="true" data-divider="heart,thumbs,laugh,wow,love,smile,wink,party,stars,hug,sparkle,check"></div>
 
 <!-- ───────────────────────── 01 Socials ───────────────────────── -->
 <section class="section" id="socials">
   <div class="wrap">
-    <img class="floater" src="assets/emoji/hearteyes.webp" alt="" style="--x:70.9%;--y:39px;--s:130px" data-drag>
-    <img class="floater" src="assets/objects/phone.webp" alt="" style="--x:84%;--y:36px;--s:166px" data-drag>
-    <img class="floater" src="assets/emoji/typing.webp" alt="" style="--x:73.8%;--y:176px;--s:95px" data-drag>
+    <img class="floater" src="assets/v3/emoji/love.svg" alt="" style="--x:78%;--y:6px;--s:104px;--r:8deg" data-drag>
+    <img class="floater" src="assets/v3/emoji/wow.svg" alt="" style="--x:90%;--y:120px;--s:84px;--r:-6deg" data-drag>
     <header class="sec-head rise">
       <div class="tag"><span class="dot"></span>AI Agent on socials</div>
-      <h2 class="display sec-title">Now answering where your customers actually talk.</h2>
+      <h2 class="display h2">Now answering where your customers actually talk.</h2>
       <p class="lead">WhatsApp, Instagram and Facebook are live. AI Agent brings the knowledge, skills and order actions it already uses on email and chat. When a person should step in, it hands the whole thread to your team.</p>
     </header>
 
     <div class="chan-grid">
       <!-- WhatsApp -->
-      <article class="chan chan-wa rise">
-        <img class="chan-icon" src="assets/channels/wa-bubble.webp" alt="" data-drag>
-        <div class="chan-tag"><span class="chan-dot"></span>WhatsApp</div>
-        <h3 class="chan-title">Order updates, right in the thread.</h3>
-        <p class="chan-desc">Customers text "where's my order?" and get tracking, delivery dates and address changes in seconds. No help centre link, no waiting for business hours.</p>
-        <div class="phone">
-          <div class="phone-head"><img src="assets/avatars/curly.webp" alt=""><div><strong>Maya R.</strong><span>online</span></div></div>
-          <div class="chat chat-wa" data-chat data-react="picker">
-            <div class="msg out">Hi! Where's my order #4821? :parcel:</div>
-            <div class="msg in" data-ai>Hi Maya! It left our warehouse yesterday and arrives Thursday. Want the tracking link?</div>
-            <div class="msg out">yes pls</div>
-            <div class="msg in" data-ai>Here you go: ups.com/track/1Z84W… I'll message you when it's out for delivery.</div>
-            <div class="msg out">you're the best :heart:</div>
+      <article class="chan rise">
+        <div class="stage-card green chan-stage" data-flower="-470,-140,.8">
+          <div class="gphone">
+            <div class="gphone-head"><span class="av" style="--av:#F8C97B">MR</span><div><strong>Maya R.</strong><span>online</span></div><span class="ch-ico wa"><img src="assets/v3/wa-glyph.svg" alt=""></span></div>
+            <div class="chat chat-wa" data-chat data-react="picker">
+              <div class="msg out">Hi! Where's my order #4821?</div>
+              <div class="msg in" data-ai>Hi Maya! It left our warehouse yesterday and arrives Thursday. Want the tracking link?</div>
+              <div class="msg out">yes pls</div>
+              <div class="msg in" data-ai>Here you go: ups.com/track/1Z84W… I'll message you when it's out for delivery.</div>
+              <div class="msg out">you're the best :heart:</div>
+            </div>
+            <p class="phone-hint">Hover a message to react</p>
           </div>
-          <p class="phone-hint">Hover a message to react</p>
+        </div>
+        <div class="chan-body">
+          <div class="chan-tag"><span class="ch-ico wa sm"><img src="assets/v3/wa-glyph.svg" alt=""></span>WhatsApp</div>
+          <h3 class="h3">Order updates, right in the thread.</h3>
+          <p>Customers text "where's my order?" and get tracking, delivery dates and address changes in seconds. No help centre link, no waiting for business hours.</p>
         </div>
       </article>
 
       <!-- Instagram -->
-      <article class="chan chan-ig rise">
-        <img class="chan-icon" src="assets/channels/ig-heart.webp" alt="" data-drag>
-        <div class="chan-tag"><span class="chan-dot"></span>Instagram</div>
-        <h3 class="chan-title">DMs and story replies that sell.</h3>
-        <p class="chan-desc">A shopper replies to your story with "is this still in stock?". AI Agent checks inventory, suggests a size and drops the product link, then follows up if they go quiet.</p>
-        <div class="phone">
-          <div class="phone-head"><img src="assets/avatars/ponytail.webp" alt=""><div><strong>lena.makes</strong><span>Active now</span></div></div>
-          <div class="chat chat-ig" data-chat data-react="doubletap">
-            <div class="story-reply"><span>Replied to your story</span><img src="assets/products/field.webp" alt=""></div>
-            <div class="msg out">does this come in medium?? :hearteyes:</div>
-            <div class="msg in" data-ai>It does! Medium is in stock in olive. It runs roomy, so most people your height size down.</div>
-            <div class="msg in card-msg" data-ai><img src="assets/products/field.webp" alt=""><div><strong>Field Jacket</strong><span>$148 · Olive</span><em>Shop now</em></div></div>
-            <div class="msg out">ordering rn :fire:</div>
+      <article class="chan rise">
+        <div class="stage-card pink chan-stage" data-flower="-120,-360,.8">
+          <div class="gphone">
+            <div class="gphone-head"><span class="av" style="--av:#AED6F5">LM</span><div><strong>lena.makes</strong><span>Active now</span></div><span class="ch-ico ig"><img src="assets/v3/ig-outline.svg" alt=""></span></div>
+            <div class="chat chat-ig" data-chat data-react="doubletap">
+              <div class="story-reply"><span>Replied to your story</span><img src="assets/products/field.webp" alt=""></div>
+              <div class="msg out">does this come in medium?? :love:</div>
+              <div class="msg in" data-ai>It does! Medium is in stock in olive. It runs roomy, so most people your height size down.</div>
+              <div class="msg in card-msg" data-ai><img src="assets/products/field.webp" alt=""><div><strong>Field Jacket</strong><span>$148 · Olive</span><em>Shop now</em></div></div>
+              <div class="msg out">ordering rn :stars:</div>
+            </div>
+            <p class="phone-hint">Double-click a message</p>
           </div>
-          <p class="phone-hint">Double-click a message</p>
+        </div>
+        <div class="chan-body">
+          <div class="chan-tag"><span class="ch-ico ig sm"><img src="assets/v3/ig-outline.svg" alt=""></span>Instagram</div>
+          <h3 class="h3">DMs and story replies that sell.</h3>
+          <p>A shopper replies to your story with "is this still in stock?". AI Agent checks inventory, suggests a size and drops the product link, then follows up if they go quiet.</p>
         </div>
       </article>
 
       <!-- Facebook -->
-      <article class="chan chan-fb rise">
-        <img class="chan-icon" src="assets/channels/fb-thumbs.webp" alt="" data-drag>
-        <div class="chan-tag"><span class="chan-dot"></span>Facebook</div>
-        <h3 class="chan-title">Messenger support that never logs off.</h3>
-        <p class="chan-desc">Returns, exchanges and subscription changes get handled at 2am on a Sunday, with the same policies and tone your team uses everywhere else.</p>
-        <div class="phone">
-          <div class="phone-head"><img src="assets/avatars/beanie.webp" alt=""><div><strong>Sam Okafor</strong><span>Messenger</span></div></div>
-          <div class="chat chat-fb" data-chat>
-            <div class="msg out">Can I swap my hoodie for a size L?</div>
-            <div class="msg in" data-ai>Of course. I've started an exchange for size L and emailed you a prepaid label. Drop it off within 14 days.</div>
-            <div class="msg out">wow that was fast :wow:</div>
-            <div class="msg in" data-ai>That's the idea :wink:</div>
+      <article class="chan rise">
+        <div class="stage-card blue-2 chan-stage" data-flower="-300,-560,.8">
+          <div class="gphone">
+            <div class="gphone-head"><span class="av" style="--av:#A9DCA2">SO</span><div><strong>Sam Okafor</strong><span>Messenger</span></div><span class="ch-ico fb"><img src="assets/v3/fb-tile.svg" alt=""></span></div>
+            <div class="chat chat-fb" data-chat>
+              <div class="msg out">Can I swap my hoodie for a size L?</div>
+              <div class="msg in" data-ai>Of course. I've started an exchange for size L and emailed you a prepaid label. Drop it off within 14 days.</div>
+              <div class="msg out">wow that was fast :wow:</div>
+              <div class="msg in" data-ai>That's the idea :wink:</div>
+            </div>
+            <div class="fb-bar" data-live>
+              <button data-r="thumbs" aria-label="Like"><img src="assets/v3/emoji/thumbs.svg" alt=""><b>0</b></button>
+              <button data-r="heart" aria-label="Love"><img src="assets/v3/emoji/heart.svg" alt=""><b>0</b></button>
+              <button data-r="laugh" aria-label="Haha"><img src="assets/v3/emoji/laugh.svg" alt=""><b>0</b></button>
+              <button data-r="wow" aria-label="Wow"><img src="assets/v3/emoji/wow.svg" alt=""><b>0</b></button>
+            </div>
           </div>
-          <div class="fb-bar" data-live>
-            <button data-r="thumbs" aria-label="Like"><img src="assets/emoji/thumbs.webp" alt=""><b>0</b></button>
-            <button data-r="heart" aria-label="Love"><img src="assets/emoji/heart.webp" alt=""><b>0</b></button>
-            <button data-r="laugh" aria-label="Haha"><img src="assets/emoji/laugh.webp" alt=""><b>0</b></button>
-            <button data-r="wow" aria-label="Wow"><img src="assets/emoji/wow.webp" alt=""><b>0</b></button>
-          </div>
+        </div>
+        <div class="chan-body">
+          <div class="chan-tag"><span class="ch-ico fb sm"><img src="assets/v3/fb-tile.svg" alt=""></span>Facebook</div>
+          <h3 class="h3">Messenger support that never logs off.</h3>
+          <p>Returns, exchanges and subscription changes get handled at 2am on a Sunday, with the same policies and tone your team uses everywhere else.</p>
         </div>
       </article>
     </div>
@@ -167,27 +203,26 @@
 </section>
 
 <!-- ───────────────────────── 02 Tone ───────────────────────── -->
-<section class="section band tone" id="tone" data-tone="0">
-  <div class="mesh tone-mesh" aria-hidden="true"><canvas data-mesh></canvas></div>
-  <div class="wrap tone-in">
-    <div class="tone-copy rise">
+<section class="section tone" id="tone" data-tone="0">
+  <div class="wrap split rev">
+    <div class="stage-card tone-stage rise" data-flower="-60,-420,.9">
+      <div class="tone-face" aria-hidden="true">
+        <img src="assets/v3/emoji/tone-formal.svg" alt=""><img src="assets/v3/emoji/tone-friendly.svg" alt=""><img src="assets/v3/emoji/tone-casual.svg" alt=""><img src="assets/v3/emoji/tone-playful.svg" alt="">
+      </div>
+      <div class="tone-card frost">
+        <div class="msg out static">My package says delivered, but it's not here.</div>
+        <div class="msg in static tone-reply" aria-live="polite"></div>
+        <div class="tone-meta tag"><span class="dot"></span>Same answer, same policy. <span class="tone-name">Formal</span> voice.</div>
+      </div>
+    </div>
+    <div class="copy-col rise">
       <div class="tag"><span class="dot"></span>Tone of voice</div>
-      <h2 class="display sec-title">Sounds like you. Exactly like you.</h2>
+      <h2 class="display h2">Sounds like you. Exactly like you.</h2>
       <p class="lead">Set the voice once and AI Agent keeps it on every channel: how formal it is, how much it jokes, and whether it uses emoji at all. Replies sound like your brand, not like a bot.</p>
       <div class="tone-control">
         <label for="tone-range" class="kicker">Try it: drag the slider</label>
         <input type="range" id="tone-range" min="0" max="3" step="1" value="0">
         <div class="tone-stops"><span>Formal</span><span>Friendly</span><span>Casual</span><span>Playful</span></div>
-      </div>
-    </div>
-    <div class="tone-demo rise">
-      <div class="tone-faces" aria-hidden="true">
-        <img src="assets/emoji/monocle.webp" alt=""><img src="assets/emoji/calm.webp" alt=""><img src="assets/emoji/grin.webp" alt=""><img src="assets/emoji/tongue.webp" alt="">
-      </div>
-      <div class="tone-card">
-        <div class="msg out static">My package says delivered, but it's not here.</div>
-        <div class="msg in static tone-reply" aria-live="polite"></div>
-        <div class="tone-meta tag"><span class="dot"></span>Same answer, same policy. <span class="tone-name">Formal</span> voice.</div>
       </div>
     </div>
   </div>
@@ -198,22 +233,19 @@
   <img class="gaia-orbit" src="assets/gaia/gaia-hero-left.svg" alt="" aria-hidden="true">
   <img class="gaia-bloom" src="assets/gaia/gaia-hero-right.webp" alt="" aria-hidden="true">
   <div class="wrap">
-    <img class="floater" src="assets/objects/bulb.webp" alt="" style="--x:80%;--y:-10px;--s:110px" data-drag>
-    <img class="floater" src="assets/emoji/stars.webp" alt="" style="--x:92%;--y:140px;--s:92px" data-drag>
     <header class="sec-head rise">
       <div class="tag"><img class="tag-logo" src="assets/gaia/gaia-logo.webp" alt="">Quick setup</div>
-      <h2 class="display sec-title">Gaia, now wherever your team works.</h2>
+      <h2 class="display h2">Gaia, now wherever your team works.</h2>
       <p class="lead">Gaia is the AI that coaches your AI Agent. This fall it moves into the helpdesk, runs your onboarding, and gets a home of its own.</p>
     </header>
 
     <div class="gaia-grid">
-      <article class="g-card rise">
-        <img class="g-icon" src="assets/objects/wand.webp" alt="" data-drag>
+      <article class="card rise">
         <div class="kicker">Gaia for Helpdesk</div>
-        <h3 class="g-title">Ask Gaia from any ticket.</h3>
+        <h3 class="h3">Ask Gaia from any ticket.</h3>
         <p>Agents open Gaia next to the conversation to summarise a long thread, draft a reply, or ask why AI Agent handed a ticket over. The answer arrives without leaving the ticket.</p>
         <div class="mini ticket">
-          <div class="ticket-row"><img src="assets/avatars/silver.webp" alt=""><div><strong>Ruth Alvarez</strong><span>Wrong size, again. Third email about this.</span></div></div>
+          <div class="ticket-row"><span class="av" style="--av:#EFB1F6">RA</span><div><strong>Ruth Alvarez</strong><span>Wrong size, again. Third email about this.</span></div></div>
           <div class="gaia-ask">
             <div class="g-q">Summarise this ticket</div>
             <div class="g-a" data-type>Wrong size shipped twice. Exchange approved and label sent. Suggest a 10% credit and a personal note.</div>
@@ -222,10 +254,9 @@
         </div>
       </article>
 
-      <article class="g-card rise">
-        <img class="g-icon" src="assets/objects/rocket.webp" alt="" data-drag>
+      <article class="card rise">
         <div class="kicker">Gaia Onboarding</div>
-        <h3 class="g-title">Set up in a conversation, not a project.</h3>
+        <h3 class="h3">Set up in a conversation, not a project.</h3>
         <p>Gaia reads your store, your policies and your past tickets. Then it builds your first skills and guidance with you, one question at a time.</p>
         <div class="mini onboard" data-onboard>
           <div class="ob-step"><i></i>Connect Shopify</div>
@@ -237,11 +268,10 @@
         </div>
       </article>
 
-      <article class="g-card hub rise">
-        <img class="g-icon" src="assets/objects/sprout.webp" alt="" data-drag>
+      <article class="card hub rise">
         <div class="hub-copy">
           <div class="kicker">Gaia Hub</div>
-          <h3 class="g-title">One place for what to fix, and what to run.</h3>
+          <h3 class="h3">One place for what to fix, and what to run.</h3>
           <p>Gaia Hub collects the work Gaia finds and the work it does for you. Opportunities show the gaps worth fixing. Routines run the checks you'd otherwise forget.</p>
           <div class="tabs" role="tablist">
             <button role="tab" aria-selected="true" aria-controls="tab-opps" id="t-opps">Opportunities</button>
@@ -251,15 +281,15 @@
         <div class="hub-panels">
           <div class="hub-panel" id="tab-opps" role="tabpanel" aria-labelledby="t-opps">
             <p class="panel-note">Ranked by the tickets each fix would save every month.</p>
-            <div class="opp"><img src="assets/objects/parcel.webp" alt=""><div><strong>Return questions escalate 38% of the time</strong><span>Draft a returns skill</span></div><b>+312</b><button class="chip-btn" data-fix>Fix with Gaia</button></div>
-            <div class="opp"><img src="assets/objects/search.webp" alt=""><div><strong>Sizing answers conflict across 3 articles</strong><span>Merge into one guide</span></div><b>+140</b><button class="chip-btn" data-fix>Fix with Gaia</button></div>
-            <div class="opp"><img src="assets/objects/bolt.webp" alt=""><div><strong>Delay questions spike every Monday</strong><span>Add a shipping delay notice</span></div><b>+95</b><button class="chip-btn" data-fix>Fix with Gaia</button></div>
+            <div class="opp"><i class="ic" data-icon="parcel" style="--t:#FFD2C9"></i><div><strong>Return questions escalate 38% of the time</strong><span>Draft a returns skill</span></div><b>+312</b><button class="chip-btn" data-fix>Fix with Gaia</button></div>
+            <div class="opp"><i class="ic" data-icon="search" style="--t:#D1E9FC"></i><div><strong>Sizing answers conflict across 3 articles</strong><span>Merge into one guide</span></div><b>+140</b><button class="chip-btn" data-fix>Fix with Gaia</button></div>
+            <div class="opp"><i class="ic" data-icon="bolt" style="--t:#FFD896"></i><div><strong>Delay questions spike every Monday</strong><span>Add a shipping delay notice</span></div><b>+95</b><button class="chip-btn" data-fix>Fix with Gaia</button></div>
           </div>
           <div class="hub-panel" id="tab-routines" role="tabpanel" aria-labelledby="t-routines" hidden>
             <p class="panel-note">Recurring jobs Gaia runs on a schedule, then reports back.</p>
-            <label class="routine"><img src="assets/objects/clipboard.webp" alt=""><div><strong>Weekly knowledge audit</strong><span>Mondays · 9:00</span></div><input type="checkbox" checked><i></i></label>
-            <label class="routine"><img src="assets/objects/gear.webp" alt=""><div><strong>Monthly skills review</strong><span>1st of the month</span></div><input type="checkbox" checked><i></i></label>
-            <label class="routine"><img src="assets/objects/bulb.webp" alt=""><div><strong>Daily escalation digest to #cx-team</strong><span>Every day · 18:00</span></div><input type="checkbox"><i></i></label>
+            <label class="routine"><i class="ic" data-icon="clipboard" style="--t:#C7EBC2"></i><div><strong>Weekly knowledge audit</strong><span>Mondays · 9:00</span></div><input type="checkbox" checked><i class="sw"></i></label>
+            <label class="routine"><i class="ic" data-icon="gear" style="--t:#C7CCFD"></i><div><strong>Monthly skills review</strong><span>1st of the month</span></div><input type="checkbox" checked><i class="sw"></i></label>
+            <label class="routine"><i class="ic" data-icon="bulb" style="--t:#F7D1FB"></i><div><strong>Daily escalation digest to #cx-team</strong><span>Every day · 18:00</span></div><input type="checkbox"><i class="sw"></i></label>
           </div>
         </div>
       </article>
@@ -267,39 +297,38 @@
   </div>
 </section>
 
-<div class="divider" aria-hidden="true" data-divider="bolt,gear,clipboard,sparkle,search,bag,parcel,gift,wand,rocket,bulb,sprout"></div>
-
 <!-- ───────────────────────── 04 Actions + More like this ───────────────────────── -->
-<section class="section band sky" id="actions">
+<section class="section" id="actions">
   <div class="wrap">
-    <img class="floater" src="assets/objects/bolt.webp" alt="" style="--x:72%;--y:-30px;--s:100px" data-drag>
-    <img class="floater" src="assets/objects/bag.webp" alt="" style="--x:87%;--y:40px;--s:104px" data-drag>
+    <img class="floater" src="assets/v3/emoji/thumbs.svg" alt="" style="--x:84%;--y:-6px;--s:92px;--r:8deg" data-drag>
     <header class="sec-head rise">
       <div class="tag"><span class="dot"></span>Skills and shopping</div>
-      <h2 class="display sec-title">Less talking about it. More done.</h2>
+      <h2 class="display h2">Less talking about it. More done.</h2>
     </header>
 
     <div class="duo">
-      <article class="w-card rise">
+      <article class="card w-card rise">
         <div class="kicker">Actions in Skills</div>
-        <h3 class="g-title">Skills now say what to do, not just what to say.</h3>
+        <h3 class="h3">Skills now say what to do, not just what to say.</h3>
         <p>Add actions to any skill: refund, cancel, pause a subscription or update an address. AI Agent runs them at the exact step where they belong.</p>
-        <div class="skill" data-skill>
-          <div class="skill-head"><img src="assets/objects/clipboard.webp" alt=""><div><span class="kicker">Skill</span><strong>Order cancellation</strong></div></div>
-          <ol class="skill-steps">
-            <li>Check the order hasn't shipped</li>
-            <li class="slot" data-slot><span>Drop an action here</span></li>
-            <li>Confirm with the customer</li>
-            <li class="slot" data-slot><span>Drop an action here</span></li>
-          </ol>
-        </div>
-        <div class="actions-tray">
-          <span class="kicker">Drag or click</span>
-          <button class="action" data-action="Cancel order" data-app="Shopify"><img src="assets/objects/bolt.webp" alt="">Cancel order</button>
-          <button class="action" data-action="Refund to card" data-app="Shopify"><img src="assets/objects/bolt.webp" alt="">Refund to card</button>
-          <button class="action" data-action="Pause subscription" data-app="Recharge"><img src="assets/objects/bolt.webp" alt="">Pause subscription</button>
-          <button class="action" data-action="Update address" data-app="Shopify"><img src="assets/objects/bolt.webp" alt="">Update address</button>
-          <button class="reset" data-reset>Reset</button>
+        <div class="stage-card green demo" data-flower="-520,-260,.75">
+          <div class="skill frost" data-skill>
+            <div class="skill-head"><i class="ic" data-icon="clipboard" style="--t:#C7EBC2"></i><div><span class="kicker">Skill</span><strong>Order cancellation</strong></div></div>
+            <ol class="skill-steps">
+              <li>Check the order hasn't shipped</li>
+              <li class="slot" data-slot><span>Drop an action here</span></li>
+              <li>Confirm with the customer</li>
+              <li class="slot" data-slot><span>Drop an action here</span></li>
+            </ol>
+          </div>
+          <div class="actions-tray">
+            <span class="kicker">Drag or click</span>
+            <button class="action" data-action="Cancel order" data-app="Shopify"><i class="ic sm" data-icon="bolt"></i>Cancel order</button>
+            <button class="action" data-action="Refund to card" data-app="Shopify"><i class="ic sm" data-icon="bolt"></i>Refund to card</button>
+            <button class="action" data-action="Pause subscription" data-app="Recharge"><i class="ic sm" data-icon="bolt"></i>Pause subscription</button>
+            <button class="action" data-action="Update address" data-app="Shopify"><i class="ic sm" data-icon="bolt"></i>Update address</button>
+            <button class="reset" data-reset>Reset</button>
+          </div>
         </div>
         <div class="skill-run" data-run>
           <span class="kicker">Preview</span>
@@ -308,22 +337,22 @@
         </div>
       </article>
 
-      <article class="w-card rise">
+      <article class="card w-card rise">
         <div class="kicker">More like this</div>
-        <h3 class="g-title">Found one they like? Show them five more.</h3>
+        <h3 class="h3">Found one they like? Show them five more.</h3>
         <p>Shoppers tap "More like this" on any product AI Agent recommends. They get look-alikes picked by what the product looks like, not just by its tags.</p>
         <div class="seg" role="group" aria-label="Compare">
           <button data-mode="before" aria-pressed="false">Before</button>
           <button data-mode="after" aria-pressed="true">After</button>
         </div>
-        <div class="mlt" data-mlt data-mode="after">
+        <div class="stage-card peri demo mlt" data-mlt data-mode="after" data-flower="-360,-620,.75">
           <div class="msg out static">Love this jacket, but got anything similar in a lighter colour?</div>
           <div class="mlt-main">
             <div class="p-card main"><img src="assets/products/field.webp" alt=""><strong>Field Jacket</strong><span>$148</span></div>
             <div class="mlt-side">
               <p class="mlt-before">Here's the Field Jacket in olive. That's the closest match I found.</p>
               <p class="mlt-after">Here's the Field Jacket. Tap below for look-alikes in lighter shades.</p>
-              <button class="btn btn-primary mlt-btn"><img class="ie" src="assets/objects/search.webp" alt=""> More like this</button>
+              <button class="btn btn-primary mlt-btn"><i class="ic sm inv" data-icon="search"></i>More like this</button>
               <p class="mlt-dead kicker">The shopper leaves. Sale lost.</p>
             </div>
           </div>
@@ -346,11 +375,12 @@
     <div class="tag"><span class="dot"></span>See it live</div>
     <h2 class="display close-title">Say hi to the new AI Agent.</h2>
     <p class="lead">Book a demo and we'll show it working on your own channels, with your own products.</p>
-    <div class="hero-cta">
+    <div class="ctas">
       <a class="btn btn-light btn-lg" href="#close">Book a demo</a>
       <a class="btn btn-outline-light btn-lg" href="#promo">Text us for a free 30 days</a>
     </div>
   </div>
+  <p class="pile-hint kicker" aria-hidden="true">Grab an emoji. Throw it. Click anywhere.</p>
   <div class="pile-layer" aria-hidden="true"></div>
 </section>
 
@@ -366,7 +396,7 @@
 <!-- Pinned promo + reaction counter -->
 <div class="pinned" aria-live="polite">
   <span class="counter" hidden>You've sent <b>0</b> reactions</span>
-  <a class="pin-bubble" href="#promo"><img src="assets/objects/gift.webp" alt=""><span>Text us for a <strong>free 30 days</strong></span></a>
+  <a class="pin-bubble" href="#promo"><img src="assets/v3/emoji/party.svg" alt=""><span>Text us for a <strong>free 30 days</strong></span></a>
 </div>
 <div class="toast" role="status" aria-live="polite"></div>
 
