@@ -8,13 +8,13 @@
 @font-face { font-family: "Red Hat Mono"; src: url("assets/fonts/RedHatMono-VF.woff2") format("woff2"); font-weight: 300 700; font-display: block; }
 
 :root {
-  --coral-25: #fef4f3; --coral-50: #ffeae6; --coral-100: #ffd2c9; --coral-300: #ff9780; --coral-500: #fb6b4b;
+  --coral-25: #fef4f3; --coral-50: #ffeae6; --coral-100: #ffd2c9; --coral-200: #ffb5a5; --coral-300: #ff9780; --coral-500: #fb6b4b;
   --n0: #ffffff; --n10: #fcfaf8; --n20: #f8f5f1; --n50: #f0ebe5; --n100: #e8e2dc; --n200: #dfd9d3;
   --n300: #c0bbb5; --n400: #8e8985; --n500: #74706c; --n600: #5f5c59; --n700: #474543; --n800: #363433; --n900: #252423; --n950: #1b1a19;
   --blue-100: #d1e9fc; --blue-200: #aed6f5; --blue-400: #90c6ef;
   --purple-100: #c7ccfd; --purple-200: #9fa7f8;
   --pink-100: #f7d1fb; --pink-200: #efb1f6;
-  --yellow-100: #ffd896; --yellow-200: #f8c97b;
+  --yellow-50: #ffe8c2; --yellow-100: #ffd896; --yellow-200: #f8c97b; /* yellow-50 comes from Figma (Brand Foundations Yellow/50) */
   --green-100: #c7ebc2; --green-200: #a9dca2;
 
   --font-sans: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -87,7 +87,7 @@ em { font-style: normal; }
 .nav-cta .btn { height: 38px; font-size: 14px; padding: 0 16px; }
 
 /* ═════════════ Hero ═════════════ */
-.hero { position: relative; padding: 138px 0 110px; overflow: hidden; }
+.hero { position: relative; padding: 138px 0 110px; overflow: hidden; background: var(--n0); }
 .stage-box { position: relative; width: min(1200px, 100% - 48px); margin: 0 auto; }
 .stage { position: absolute; left: 0; top: 0; width: 1200px; height: 624px; transform-origin: 0 0; }
 .hero-copy { position: absolute; left: 0; top: 0; width: 640px; height: 624px; display: flex; flex-direction: column; justify-content: center; gap: 24px; }
@@ -158,7 +158,7 @@ html.js .blue { opacity: 0; }
 
 .stage-card { position: relative; overflow: hidden; border-radius: 24px; background: var(--tint, var(--blue-400)); padding: 40px; isolation: isolate; }
 .stage-card > :not(.gf-fill):not(.gf-rim) { position: relative; }
-.stage-card.coral { --tint: var(--coral-300); }
+.stage-card.coral { --tint: var(--coral-200); }
 .stage-card.green { --tint: var(--green-200); }
 .stage-card.pink { --tint: var(--pink-200); }
 .stage-card.blue-2 { --tint: var(--blue-200); }
@@ -225,7 +225,7 @@ html.is-dragging, html.is-dragging * { -webkit-user-select: none !important; use
 /* ─── 01 Socials ─── */
 .chan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 72px; }
 .chan { display: flex; flex-direction: column; }
-.chan-stage { padding: 28px 22px; }
+.chan-stage { padding: 28px 22px; border-radius: 56px; }
 .chan-stage .gphone { height: 500px; }
 .chan-stage .chat { flex: 1; min-height: 0; padding-top: 22px; }
 .chan-stage .msg { font-size: 14px; }
@@ -276,14 +276,17 @@ html.is-dragging, html.is-dragging * { -webkit-user-select: none !important; use
 .quote figcaption span { font-size: 13px; color: var(--n600); }
 
 /* ─── 02 Tone ─── */
-.tone-stage { min-height: 580px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 28px; transition: background-color .8s var(--ease-in-out); }
-.tone[data-tone="0"] .tone-stage { background: var(--blue-200); }
-.tone[data-tone="1"] .tone-stage { background: var(--yellow-200); }
-.tone[data-tone="2"] .tone-stage { background: var(--green-200); }
-.tone[data-tone="3"] .tone-stage { background: var(--pink-200); }
-.tone-face { width: 150px; height: 150px; }
-.tone-face img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transform: scale(.7) rotate(-12deg); transition: opacity .35s var(--ease-out), transform .7s var(--ease-spring); }
-.tone-face img.on { opacity: 1; transform: rotate(-4deg); }
+.tone-split { grid-template-columns: 524fr 604fr; }
+.tone-wrap { position: relative; }
+.tone-stage { min-height: 448px; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: background-color .8s var(--ease-in-out); }
+.tone[data-tone="0"] .tone-stage { background: var(--blue-100); }
+.tone[data-tone="1"] .tone-stage { background: var(--yellow-50); }
+.tone[data-tone="2"] .tone-stage { background: var(--green-100); }
+.tone[data-tone="3"] .tone-stage { background: var(--pink-100); }
+/* The face sits on the card's top-left corner, outside it, in the colour of the selected voice */
+.tone-face { position: absolute; left: -75px; top: -89px; width: 150px; height: 150px; z-index: 3; }
+.tone-face img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transform: scale(.7); transition: opacity .35s var(--ease-out), transform .7s var(--ease-spring); }
+.tone-face img.on { opacity: 1; transform: none; }
 .tone-card { width: 100%; padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 280px; }
 .tone-card .msg { font-size: 16px; max-width: 88%; padding: 12px 16px; }
 .tone-reply { min-height: 118px; }
@@ -454,6 +457,9 @@ html.js .rise.in { opacity: 1; transform: none; transition: opacity .8s var(--ea
   .copy-col { max-width: 640px; }
   .chan-grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; row-gap: 56px; }
   .card.hub { grid-template-columns: 1fr; }
+  .tone-split { grid-template-columns: 1fr; }
+  .tone-wrap { margin-top: 56px; }
+  .tone-face { left: -12px; top: -64px; width: 112px; height: 112px; }
   .floater:not(.stage-wrap .floater) { display: none; }
 }
 @media (max-width: 640px) {
