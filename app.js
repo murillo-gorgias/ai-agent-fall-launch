@@ -33,16 +33,95 @@
   const lerp = (a, b, k) => a + (b - a) * k;
   const P = (t, t0, d, e = E.out) => e(clamp((t - t0) / d));
 
-  /* ───────── Bubble emoji: every one the page can spawn, by name ───────── */
-  // Large (56 px drawing) for anything 32 px and up; Small (24 px drawing, bigger features) for 28 px and below.
-  // emoji-fx adds grain and hand-drawn face lines that wobble; its still/ copies hold the lines still for reduced motion.
-  const FX = RM ? 'assets/v3/emoji-fx/still/' : 'assets/v3/emoji-fx/';
-  if (RM) $$('img[src^="assets/v3/emoji-fx/"]').forEach(img => (img.src = img.getAttribute('src').replace('emoji-fx/', 'emoji-fx/still/')));
-  const PATH = {}, SMALL = {};
-  'smile calm laugh relieved wow love wink tongue cool stars party thinking hug polite concerned uhoh heart thumbs sparkle typing check'
-    .split(' ').forEach(n => { PATH[n] = `${FX}${n}.svg`; SMALL[n] = `${FX}${n}-sm.svg`; });
+  /* ───────── Bubble emoji: drawn live as SVG, every one the page can spawn, by name ───────── */
+  // <bubble-emoji name="smile"> uses the Large drawing (56 px) for anything 32 px and up;
+  // add `small` for the Small drawing (24 px, bigger features) at 28 px and below.
+  // The look comes from the Bubble Emoji Lab: fine grain measured in screen pixels, thinner face lines,
+  // and a hand-drawn wobble that redraws while the pointer is on the emoji (never under reduced motion).
+  const LOOK = { grain: .15, contrast: 3, grainPx: 1, weight: .7, wobbleDepth: .5, wobbleWidth: 16 };
+  const DRAW = {};
+  const INK = /stroke="#1B1A19"/i;
+  Object.entries(window.EMOJI || {}).forEach(([n, pair]) => {
+    DRAW[n] = {};
+    for (const v of ['lg', 'sm']) {
+      const W = +pair[v].match(/viewBox="0 0 ([\d.]+)/)[1], s = W / 56;
+      const [bubble, ...face] = pair[v].match(/<(path|circle|rect|ellipse|line|polyline|polygon)\b[^>]*\/>/g);
+      const thin = el => INK.test(el) ? el.replace(/stroke-width="([\d.]+)"/, (m, w) => `stroke-width="${+(w * LOOK.weight).toFixed(3)}"`) : el;
+      DRAW[n][v] = { W, bubble, face: face.map(thin).join(''), freq: +(1 / (LOOK.wobbleWidth * s)).toFixed(4), depth: +(LOOK.wobbleDepth * s * 5).toFixed(3) };
+    }
+  });
+  const NAMES = Object.keys(DRAW);
   const REACT = ['heart', 'thumbs', 'laugh', 'wow', 'love', 'smile', 'party', 'stars', 'sparkle', 'wink', 'hug', 'check'];
-  const emojify = html => html.replace(/:([a-z-]+):/g, (m, n) => (SMALL[n] ? `<img class="ie" src="${SMALL[n]}" alt="">` : m));
+
+  // Grain: grey noise blended in soft light on an opaque copy of the bubble, then cut back to the bubble's own edge.
+  // Each emoji measures itself, so the grain stays 1 screen pixel whatever size it is drawn at.
+  const GRAIN_FN = ['R', 'G', 'B'].map(c => `<feFunc${c} type="linear" slope="${LOOK.grain * LOOK.contrast}" intercept="${.5 - .5 * LOOK.grain * LOOK.contrast}"/>`).join('');
+  const sized = new ResizeObserver(entries => entries.forEach(en => en.target.sizeGrain(en.contentRect.width)));
+
+  let emojiId = 0;
+  class BubbleEmoji extends HTMLElement {
+    static get observedAttributes() { return ['name', 'small']; }
+    get name() { return this.getAttribute('name'); }
+    set name(v) { this.setAttribute('name', v); }
+    connectedCallback() { if (!this.turb) this.draw(); sized.observe(this); }
+    disconnectedCallback() { sized.unobserve(this); }
+    attributeChangedCallback() { if (this.isConnected) this.draw(); }
+    sizeGrain(px) {
+      if (this.grainTurb && px > 0) this.grainTurb.setAttribute('baseFrequency', +(.6 / LOOK.grainPx * px / this.W).toFixed(4));
+    }
+    draw() {
+      const D = DRAW[this.name] && DRAW[this.name][this.hasAttribute('small') ? 'sm' : 'lg'];
+      if (!D) return;
+      const id = `emo${++emojiId}`, region = `x="0" y="0" width="${D.W}" height="${D.W}" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"`;
+      this.W = D.W;
+      this.seed = 1 + (emojiId * 37) % 900;
+      this.innerHTML = `<svg viewBox="0 0 ${D.W} ${D.W}" aria-hidden="true" focusable="false"><defs>` +
+        `<filter id="${id}g" ${region}><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="2" seed="${this.seed}" result="n"/>` +
+        `<feColorMatrix in="n" type="matrix" values="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1" result="g"/>` +
+        `<feComponentTransfer in="g" result="m">${GRAIN_FN}</feComponentTransfer>` +
+        `<feComponentTransfer in="SourceGraphic" result="o"><feFuncA type="linear" slope="255" intercept="0"/></feComponentTransfer>` +
+        `<feBlend in="m" in2="o" mode="soft-light" result="b"/><feComposite in="b" in2="SourceGraphic" operator="in"/></filter>` +
+        `<filter id="${id}w" ${region}><feTurbulence type="fractalNoise" baseFrequency="${D.freq}" numOctaves="2" seed="${this.seed}" result="w"/>` +
+        `<feDisplacementMap in="SourceGraphic" in2="w" scale="${D.depth}" xChannelSelector="R" yChannelSelector="G"/></filter></defs>` +
+        `<g filter="url(#${id}g)">${D.bubble}</g><g filter="url(#${id}w)">${D.face}</g></svg>`;
+      [this.grainTurb, this.turb] = this.querySelectorAll('feTurbulence');
+      this.sizeGrain(this.offsetWidth);
+    }
+  }
+  customElements.define('bubble-emoji', BubbleEmoji);
+  const emo = (n, small, attrs = '') => `<bubble-emoji name="${n}"${small ? ' small' : ''}${attrs ? ' ' + attrs : ''}></bubble-emoji>`;
+  const makeEmo = (n, cls) => { const el = document.createElement('bubble-emoji'); el.name = n; if (cls) el.className = cls; return el; };
+  const emojify = html => html.replace(/:([a-z-]+):/g, (m, n) => (DRAW[n] ? emo(n, true, 'class="ie"') : m));
+
+  // Boil: while the pointer is on an emoji (or drags it), its face lines redraw about six times a second.
+  // After the pointer leaves, it keeps going for a moment, then settles back on its first drawing.
+  const boiling = new Map();
+  let boilTimer = 0;
+  function boilTick() {
+    const now = performance.now();
+    for (const [el, until] of boiling) {
+      el.step = (el.step || 0) + 1;
+      if (now > until || !el.isConnected) { el.step = 0; boiling.delete(el); }
+      el.turb.setAttribute('seed', el.seed + (el.step % 3));
+    }
+    if (!boiling.size) { clearInterval(boilTimer); boilTimer = 0; }
+  }
+  function boil(el, on) {
+    if (RM || !el || !el.turb) return;
+    if (on) boiling.set(el, Infinity);
+    else if (boiling.has(el)) boiling.set(el, performance.now() + 420);
+    if (on && !boilTimer) { boilTick(); boilTimer = setInterval(boilTick, 160); }
+  }
+  // An emoji boils when the pointer is on it, or on the button or link it sits in.
+  const owned = t => {
+    if (!t || !t.closest) return [];
+    const e = t.closest('bubble-emoji');
+    if (e) return [e];
+    const host = t.closest('a, button');
+    return host ? [...host.querySelectorAll('bubble-emoji')] : [];
+  };
+  addEventListener('pointerover', e => owned(e.target).forEach(el => boil(el, true)));
+  addEventListener('pointerout', e => { const next = owned(e.relatedTarget); owned(e.target).forEach(el => next.includes(el) || boil(el, false)); });
   $$('[data-chat] .msg, [data-type]').forEach(el => (el.innerHTML = emojify(el.innerHTML)));
 
   /* ───────── Line icons for UI rows (no 3D objects in this version) ───────── */
@@ -66,7 +145,7 @@
   const toastEl = $('.toast');
   let toastT;
   function toast(text, img) {
-    toastEl.innerHTML = (img ? `<img src="${SMALL[img]}" alt="">` : '') + text;
+    toastEl.innerHTML = (img ? emo(img, true) : '') + text;
     toastEl.classList.add('on');
     clearTimeout(toastT);
     toastT = setTimeout(() => toastEl.classList.remove('on'), 2200);
@@ -76,10 +155,7 @@
     if (RM) return;
     const { n = 7, names = REACT, spread = 150, size = 42 } = opts;
     for (let i = 0; i < n && live < 80; i++) {
-      const img = new Image();
-      img.src = PATH[pick(names)];
-      img.className = 'burst';
-      img.alt = '';
+      const img = makeEmo(pick(names), 'burst');
       img.style.width = img.style.height = `${size * rand(.75, 1.25)}px`;
       document.body.appendChild(img);
       live++;
@@ -104,7 +180,7 @@
   addEventListener('click', e => {
     if (swallow) { swallow = false; return; }
     if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 6) return;
-    if (e.target.closest('a, button, input, label, [data-drag], .msg, .p-card, .divider img, .picker, .pinned, .tabs, .seg')) return;
+    if (e.target.closest('a, button, input, label, [data-drag], .msg, .p-card, .divider bubble-emoji, .picker, .pinned, .tabs, .seg')) return;
     burst(e.clientX, e.clientY);
     bump();
     const host = e.target.closest('.pile-host');
@@ -440,9 +516,7 @@
       const b = Bodies.rectangle(x, -w - rand(0, 500), w, w, { chamfer: { radius: w * .2 }, restitution: .3, friction: .2, frictionAir: .012, density: .0016 });
       Body.setAngle(b, rand(-.5, .5));
       Body.setAngularVelocity(b, rand(-.08, .08));
-      const img = new Image();
-      img.src = PATH[names[i % names.length]];
-      img.alt = ''; img.draggable = false;
+      const img = makeEmo(names[i % names.length]);
       img.style.width = img.style.height = `${w}px`;
       layer.appendChild(img);
       items.push({ b, img, h: w / 2, name: names[i % names.length] });
@@ -493,14 +567,22 @@
       const c = Constraint.create({ pointA: p, bodyB: b, pointB: { x: p.x - b.position.x, y: p.y - b.position.y }, stiffness: .1, damping: .1, length: 0 });
       Composite.add(world, c);
       drag = { c, b, id: e.pointerId, p0: p, moved: false };
+      hover(elOf(b));
       try { host.setPointerCapture(e.pointerId); } catch (_) {}
       host.classList.add('grabbing');
     });
+    // The pile's emoji ignore the pointer (the host handles it), so find the one under the pointer to make it boil.
+    let over = null;
+    const elOf = b => { const it = b && items.find(i => i.b === b); return it ? it.img : null; };
+    const hover = el => { if (el !== over) { boil(over, false); over = el; boil(el, true); } };
     host.addEventListener('pointermove', e => {
       const p = pt(e);
-      if (drag && e.pointerId === drag.id) { drag.c.pointA = p; if (Math.hypot(p.x - drag.p0.x, p.y - drag.p0.y) > 5) drag.moved = true; }
-      else if (e.pointerType === 'mouse') host.style.cursor = hit(p) ? 'grab' : '';
+      if (drag && e.pointerId === drag.id) { drag.c.pointA = p; if (Math.hypot(p.x - drag.p0.x, p.y - drag.p0.y) > 5) drag.moved = true; return; }
+      const b = hit(p);
+      if (e.pointerType === 'mouse') host.style.cursor = b ? 'grab' : '';
+      hover(elOf(b));
     });
+    host.addEventListener('pointerleave', () => { if (!drag) hover(null); });
     const release = e => {
       if (!drag || e.pointerId !== drag.id) return;
       Composite.remove(world, drag.c);
@@ -516,6 +598,7 @@
       swallow = true;
       setTimeout(() => (swallow = false), 0);
       drag = null;
+      if (e.pointerType !== 'mouse') hover(null);
     };
     host.addEventListener('pointerup', release);
     host.addEventListener('pointercancel', release);
@@ -554,7 +637,7 @@
       dragMode(false);
       el.style.transform = '';
       if (!s.moved) {
-        const name = Object.keys(PATH).find(k => el.src && el.src.endsWith(PATH[k]));
+        const name = el.getAttribute('name');
         burst(e.clientX, e.clientY, { names: name ? [name] : REACT, n: 6 });
         bump();
       }
@@ -632,7 +715,7 @@
   function react(msg, name) {
     let rx = $('.rx', msg);
     if (!rx) { rx = document.createElement('span'); rx.className = 'rx'; msg.appendChild(rx); }
-    rx.innerHTML = `<img src="${SMALL[name]}" alt="">`;
+    rx.innerHTML = emo(name, true);
     rx.style.animation = 'none'; rx.offsetWidth; rx.style.animation = '';
     msg.classList.add('reacted');
     bump();
@@ -644,7 +727,7 @@
       if ($('.picker', msg) || msg.classList.contains('is-typing')) return;
       const p = document.createElement('div');
       p.className = 'picker';
-      p.innerHTML = ['thumbs', 'heart', 'laugh', 'wow', 'love'].map(n => `<button data-n="${n}" aria-label="${n}"><img src="${SMALL[n]}" alt=""></button>`).join('');
+      p.innerHTML = ['thumbs', 'heart', 'laugh', 'wow', 'love'].map(n => `<button data-n="${n}" aria-label="${n}">${emo(n, true)}</button>`).join('');
       p.addEventListener('click', e => {
         const b = e.target.closest('button');
         if (!b) return;
@@ -663,8 +746,7 @@
   $$('[data-react=doubletap] .msg').forEach(msg => {
     let last = 0;
     const love = () => {
-      const h = new Image();
-      h.src = PATH.heart; h.className = 'big-heart'; h.alt = '';
+      const h = makeEmo('heart', 'big-heart');
       msg.appendChild(h);
       setTimeout(() => h.remove(), 1000);
       react(msg, 'love');
@@ -691,8 +773,7 @@
       if (RM) return;
       const pr = card.getBoundingClientRect(), br = b.getBoundingClientRect();
       for (let i = 0; i < 3; i++) {
-        const img = new Image();
-        img.src = PATH[b.dataset.r]; img.className = 'live-rx'; img.alt = '';
+        const img = makeEmo(b.dataset.r, 'live-rx');
         img.style.left = `${br.left - pr.left + br.width / 2 - 19 + rand(-10, 10)}px`;
         card.appendChild(img);
         const sway = rand(-50, 50);
@@ -713,7 +794,7 @@
     ['Casual', "Ugh, the worst. I've already chased the carrier on #4821 :thinking: You'll get an update within a day, and if it's really gone, a new one ships free."],
     ['Playful', "Plot twist nobody asked for :wow: I'm on it: carrier investigation started for #4821 :sparkle: Update within 24h, and if your parcel ran off, a fresh one ships free :heart:"]
   ];
-  const range = $('#tone-range'), reply = $('.tone-reply'), faces = $$('.tone-face img'), stops = $$('.tone-stops span');
+  const range = $('#tone-range'), reply = $('.tone-reply'), faces = $$('.tone-face bubble-emoji'), stops = $$('.tone-stops span');
   let toneRun = 0;
   async function setTone(i, animate = true) {
     const run = ++toneRun;
@@ -747,7 +828,7 @@
       if (!en.isIntersecting) return;
       o.disconnect();
       await wait(900);
-      const parts = html.split(/(<img[^>]*>)/).flatMap(p => (p.startsWith('<img') ? [p] : [...p]));
+      const parts = html.split(/(<bubble-emoji[\s\S]*?<\/bubble-emoji>)/).flatMap(p => (p.startsWith('<bubble-emoji') ? [p] : [...p]));
       let out = '';
       for (const p of parts) { out += p; el.innerHTML = out; await wait(14); }
     }, { threshold: .6 }).observe(el);
@@ -877,9 +958,9 @@
 
   /* ───────── Divider row ───────── */
   $$('[data-divider]').forEach(d => {
-    d.innerHTML = d.dataset.divider.split(',').map((n, i) => `<img src="${PATH[n]}" alt="" data-n="${n}" style="--i:${i}">`).join('');
+    d.innerHTML = d.dataset.divider.split(',').map((n, i) => emo(n, false, `data-n="${n}" style="--i:${i}"`)).join('');
     d.addEventListener('click', e => {
-      const img = e.target.closest('img');
+      const img = e.target.closest('bubble-emoji');
       if (!img) return;
       burst(e.clientX, e.clientY, { names: [img.dataset.n], n: 6 });
       bump();

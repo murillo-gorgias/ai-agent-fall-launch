@@ -42,6 +42,10 @@
 html { scroll-behavior: smooth; overflow-x: hidden; }
 body { background: var(--n10); color: var(--n950); font: 400 16px/1.5 var(--font-sans); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 img { display: block; max-width: 100%; }
+/* Bubble emoji are live SVG (app.js): Large is 56 px and Small 24 px unless a rule sizes them. :where() keeps these defaults weaker than any class. */
+:where(bubble-emoji) { display: block; width: 56px; aspect-ratio: 1; flex: none; }
+:where(bubble-emoji[small]) { width: 24px; }
+bubble-emoji > svg { display: block; width: 100%; height: 100%; overflow: visible; }
 a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 em { font-style: normal; }
@@ -209,9 +213,9 @@ html.js [data-chat] > .show { opacity: 1; transform: none; transition: opacity .
 
 /* ─── Divider row ─── */
 .divider { display: flex; justify-content: center; gap: clamp(8px, 2.4vw, 30px); padding: 8px 16px 40px; flex-wrap: wrap; }
-.divider img { width: 52px; height: 52px; transition: transform .5s var(--ease-spring); cursor: pointer; }
-.divider img:nth-child(odd) { rotate: -4deg; } .divider img:nth-child(even) { rotate: 3deg; }
-.divider img:hover { transform: translateY(-10px) scale(1.12); }
+.divider bubble-emoji { width: 52px; height: 52px; transition: transform .5s var(--ease-spring); cursor: pointer; }
+.divider bubble-emoji:nth-child(odd) { rotate: -4deg; } .divider bubble-emoji:nth-child(even) { rotate: 3deg; }
+.divider bubble-emoji:hover { transform: translateY(-10px) scale(1.12); }
 .divider.wave img { animation: wave .9s var(--ease-spring) both; animation-delay: calc(var(--i) * 60ms); }
 @keyframes wave { 0% { transform: translateY(0); } 35% { transform: translateY(-20px) scale(1.08); } 100% { transform: none; } }
 
@@ -248,7 +252,7 @@ html.is-dragging, html.is-dragging * { -webkit-user-select: none !important; use
 .card-msg em { font-size: 12px; font-weight: 600; color: #4f5bd5; }
 .fb-bar { display: flex; justify-content: center; gap: 6px; padding: 10px 10px 14px; position: relative; z-index: 2; }
 .fb-bar button { display: flex; align-items: center; gap: 5px; padding: 4px 10px 4px 4px; border-radius: 999px; background: rgba(255, 255, 255, .75); font-size: 13px; font-weight: 600; transition: transform .35s var(--ease-spring); }
-.fb-bar button img { width: 26px; height: 26px; }
+.fb-bar button bubble-emoji { width: 26px; height: 26px; }
 .fb-bar button:hover { transform: translateY(-3px) scale(1.06); }
 .fb-bar button:active { transform: scale(.9); }
 .chan-stage { position: relative; }
@@ -259,10 +263,10 @@ html.is-dragging, html.is-dragging * { -webkit-user-select: none !important; use
 .msg.out .picker { right: 0; } .msg.in .picker { left: 0; }
 .picker button { width: 32px; height: 32px; display: grid; place-items: center; transition: transform .25s var(--ease-spring); }
 .picker button:hover { transform: scale(1.25) translateY(-3px); }
-.picker img { width: 26px; height: 26px; }
+.picker bubble-emoji { width: 26px; height: 26px; }
 .rx { position: absolute; bottom: -14px; width: 28px; height: 28px; display: grid; place-items: center; animation: pop .45s var(--ease-spring); }
 .msg.out .rx { right: 6px; } .msg.in .rx { left: 6px; }
-.rx img { width: 24px; height: 24px; }
+.rx bubble-emoji { width: 24px; height: 24px; }
 .msg.reacted { margin-bottom: 12px; }
 .big-heart { position: absolute; left: 50%; top: 50%; width: 96px; margin: -48px 0 0 -48px; pointer-events: none; z-index: 6; animation: heartpop 1s var(--ease-out) forwards; }
 @keyframes pop { from { transform: scale(.3); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -285,8 +289,8 @@ html.is-dragging, html.is-dragging * { -webkit-user-select: none !important; use
 .tone[data-tone="3"] .tone-stage { background: var(--pink-100); }
 /* The face sits on the card's top-left corner, outside it, in the colour of the selected voice */
 .tone-face { position: absolute; left: -75px; top: -89px; width: 150px; height: 150px; z-index: 3; }
-.tone-face img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transform: scale(.7); transition: opacity .35s var(--ease-out), transform .7s var(--ease-spring); }
-.tone-face img.on { opacity: 1; transform: none; }
+.tone-face bubble-emoji { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transform: scale(.7); transition: opacity .35s var(--ease-out), transform .7s var(--ease-spring); }
+.tone-face bubble-emoji.on { opacity: 1; transform: none; }
 .tone-card { width: 100%; padding: 24px; display: flex; flex-direction: column; gap: 12px; min-height: 280px; }
 .tone-card .msg { font-size: 16px; max-width: 88%; padding: 12px 16px; }
 .tone-reply { min-height: 118px; }
@@ -416,7 +420,7 @@ input[type=range]:focus-visible { box-shadow: 0 0 0 3px #1981d1; }
 .dark .lead { color: var(--n300); }
 .pile-host { position: relative; overflow: hidden; touch-action: pan-y; -webkit-user-select: none; user-select: none; }
 .pile-layer { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
-.pile-layer img { position: absolute; left: 0; top: 0; will-change: transform; user-select: none; }
+.pile-layer bubble-emoji { position: absolute; left: 0; top: 0; will-change: transform; user-select: none; }
 .pile-host.grabbing, .pile-host.grabbing * { cursor: grabbing !important; }
 .close { min-height: max(760px, 92svh); padding: 150px 24px 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
 .close-copy { position: relative; z-index: 2; max-width: 900px; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
@@ -434,14 +438,14 @@ input[type=range]:focus-visible { box-shadow: 0 0 0 3px #1981d1; }
 .pinned { position: fixed; right: 22px; bottom: 22px; z-index: 50; display: flex; align-items: center; gap: 10px; transform: translateY(160%); transition: transform .7s var(--ease-spring); }
 .pinned.on { transform: none; }
 .pin-bubble { display: flex; align-items: center; gap: 10px; background: var(--n950); color: var(--n10); padding: 8px 20px 8px 8px; border-radius: 26px 26px 4px 26px; font-size: 14.5px; box-shadow: 0 16px 34px -12px rgba(27, 26, 25, .5); animation: nudge 20s var(--ease-spring) infinite 4s; }
-.pin-bubble img { width: 36px; height: 36px; }
+.pin-bubble bubble-emoji { width: 36px; height: 36px; }
 .pin-bubble strong { font-weight: 600; color: var(--coral-300); }
 @keyframes nudge { 0%, 5%, 100% { transform: none; } 1.5% { transform: translateY(-12px) rotate(-3deg); } 3% { transform: translateY(0) rotate(2deg); } 4% { transform: translateY(-4px); } }
 .counter { background: #fff; border: 1px solid var(--n100); padding: 8px 14px; border-radius: 99px; font-size: 13px; box-shadow: 0 8px 20px -10px rgba(27, 26, 25, .3); animation: pop .5s var(--ease-spring); }
 .counter b { font-variant-numeric: tabular-nums; }
 .toast { position: fixed; left: 50%; bottom: 100px; z-index: 120; transform: translate(-50%, 20px); opacity: 0; background: var(--n950); color: var(--n10); padding: 10px 18px 10px 12px; border-radius: 99px; font-size: 14.5px; pointer-events: none; transition: all .45s var(--ease-spring); display: flex; align-items: center; gap: 10px; }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
-.toast img { width: 24px; height: 24px; }
+.toast bubble-emoji { width: 24px; height: 24px; }
 .burst { position: fixed; left: 0; top: 0; width: 44px; height: 44px; pointer-events: none; z-index: 110; }
 
 /* ─── Scroll reveal ─── */
