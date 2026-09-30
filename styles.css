@@ -157,7 +157,7 @@ html.js .blue { opacity: 0; }
 .fine { font-size: 12px; color: var(--n500); margin-top: 16px; }
 
 .stage-card { position: relative; overflow: hidden; border-radius: 24px; background: var(--tint, var(--blue-400)); padding: 40px; isolation: isolate; }
-.stage-card > :not(.gf-fill):not(.gf-rim) { position: relative; }
+.stage-card > :not(.gf-fill):not(.gf-rim):not(.live-rx) { position: relative; }
 .stage-card.coral { --tint: var(--coral-200); }
 .stage-card.green { --tint: var(--green-200); }
 .stage-card.pink { --tint: var(--pink-200); }
