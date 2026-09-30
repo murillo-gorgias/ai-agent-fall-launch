@@ -35,9 +35,12 @@
 
   /* ───────── Bubble emoji: every one the page can spawn, by name ───────── */
   // Large (56 px drawing) for anything 32 px and up; Small (24 px drawing, bigger features) for 28 px and below.
+  // emoji-fx adds grain and hand-drawn face lines that wobble; its still/ copies hold the lines still for reduced motion.
+  const FX = RM ? 'assets/v3/emoji-fx/still/' : 'assets/v3/emoji-fx/';
+  if (RM) $$('img[src^="assets/v3/emoji-fx/"]').forEach(img => (img.src = img.getAttribute('src').replace('emoji-fx/', 'emoji-fx/still/')));
   const PATH = {}, SMALL = {};
   'smile calm laugh relieved wow love wink tongue cool stars party thinking hug polite concerned uhoh heart thumbs sparkle typing check'
-    .split(' ').forEach(n => { PATH[n] = `assets/v3/emoji/${n}.svg`; SMALL[n] = `assets/v3/emoji/${n}-sm.svg`; });
+    .split(' ').forEach(n => { PATH[n] = `${FX}${n}.svg`; SMALL[n] = `${FX}${n}-sm.svg`; });
   const REACT = ['heart', 'thumbs', 'laugh', 'wow', 'love', 'smile', 'party', 'stars', 'sparkle', 'wink', 'hug', 'check'];
   const emojify = html => html.replace(/:([a-z-]+):/g, (m, n) => (SMALL[n] ? `<img class="ie" src="${SMALL[n]}" alt="">` : m));
   $$('[data-chat] .msg, [data-type]').forEach(el => (el.innerHTML = emojify(el.innerHTML)));
