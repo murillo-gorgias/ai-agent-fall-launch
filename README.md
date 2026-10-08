@@ -30,10 +30,9 @@ Opening `index.html` straight from disk also works, but copying the phone number
 - **Closing section:** grab, throw and stack the emoji, which run on real physics. Tap one to make it hop.
 - **Anywhere on the page:** click empty space to send a burst of reactions.
 - **Tone of Voice:** drag the slider, and the same reply retypes itself from formal to playful.
-- **Gaia Hub:** apply a fix or dismiss an opportunity, and the next one slides in.
+- **Gaia Hub:** approve or dismiss an opportunity, and the next one slides in.
 - **Shared chats:** copy the link to a Gaia chat.
 - **AI coverage:** link a skill to an intent, and switch an intent between AI Agent and your team.
-- **Analytics:** switch the breakdown table between Agents, Channel and SLA, and click a column to sort.
 - **Actions in Skills:** drag an action into a step, or click one. Fill both steps to watch AI Agent run the skill.
 - **More like this:** switch between Before and After, and press the button to show the look-alikes.
 - **Floating emoji:** drag any floating emoji and let go. It springs back to its place.
@@ -46,6 +45,7 @@ Visitors who turn on reduced motion in their system settings get a still version
 - `v3/`, `v2/` and `v1/`: the earlier versions, each with its own three files.
 - `versions.css`: the version switcher bar, shared by all four.
 - `assets/v3/`: version 3's bubble emoji (SVG) and channel icons.
+- `assets/v4/`: version 4's free-trial photo, the AI coverage product screen and the Shopify mark.
 - `assets/`: the earlier versions' 3D emoji, objects, channel icons and avatars, the product photos, plus the Gorgias logos and fonts.
 
 ## Placeholders

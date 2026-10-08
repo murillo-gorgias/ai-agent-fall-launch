@@ -135,13 +135,6 @@
     share: '<path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/>',
     copy: '<rect x="8.5" y="8.5" width="12" height="12" rx="2.5"/><path d="M15.5 8.5V6A2.5 2.5 0 0 0 13 3.5H6A2.5 2.5 0 0 0 3.5 6v7A2.5 2.5 0 0 0 6 15.5h2.5"/>',
     check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
-    table: '<rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M3.5 9.5h17M3.5 14.5h17M9.5 9.5v10"/>',
-    chat: '<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 3.5V17h0A1.5 1.5 0 0 1 4 15.5z"/>',
-    pin: '<path d="M9 3.5h6l-1 5.5 3.5 3.5h-11L10 9z"/><path d="M12 12.5V21"/>',
-    chart: '<path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/>',
-    up: '<path d="M7 17 17 7M9 7h8v8"/>',
-    down: '<path d="M7 7l10 10M17 9v8H9"/>',
-    priority: '<path d="m6 13 6-6 6 6M6 18l6-6 6 6"/>',
   };
   const iconize = (root = document) => $$('[data-icon]', root).forEach(el => {
     el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#1B1A19" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ICON[el.dataset.icon] || ''}</svg>`;
@@ -187,7 +180,7 @@
   addEventListener('click', e => {
     if (swallow) { swallow = false; return; }
     if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) > 6) return;
-    if (e.target.closest('a, button, input, label, [data-drag], .msg, .p-card, .divider bubble-emoji, .seg, .opp-card, .share-pop, .cov, .an-app')) return;
+    if (e.target.closest('a, button, input, label, [data-drag], .msg, .p-card, .divider bubble-emoji, .seg, .opp-card, .share-pop, .cov')) return;
     burst(e.clientX, e.clientY);
     const host = e.target.closest('.pile-host');
     host && host._kick && host._kick(e.clientX, e.clientY);
@@ -785,23 +778,24 @@
 
   /* Gaia Hub: two opportunity cards at a time. Applying a fix or dismissing one brings in the next. */
   const OPPS = [
-    ['"Order tracking" resolves below your average', 'Assign intent to skill', 'AI Agent hands over 41% of tracking questions. Linking them to your Order status skill would answer most of them.', 'Link skill'],
-    ['Return window answers conflict across 3 articles', 'Merge into one guide', 'Two articles say 30 days and one says 14. Gaia drafted a single article that replaces all three.', 'Review draft'],
-    ['"Size exchange" hands over every time', 'Add an action to a skill', 'AI Agent has no way to swap a size. Add Create exchange to your Exchanges skill and it can finish the job.', 'Add action'],
-    ['Delay questions spike every Monday', 'Add a shipping delay notice', 'Weekend orders ship on Tuesday. A short notice in your shipping guidance would answer these before they come in.', 'Add notice'],
-    ['"Gift wrap" has no answer in your knowledge', 'Write a help article', 'Shoppers asked 86 times this month. Gaia wrote a first draft from your past replies.', 'Review draft'],
+    ['"Order tracking" resolves below your average', 'Assign intent to skill', 'AI Agent hands over 41% of tracking questions. Linking them to your Order status skill would answer most of them.'],
+    ['Return window answers conflict across 3 articles', 'Merge into one guide', 'Two articles say 30 days and one says 14. Gaia drafted a single article that replaces all three.'],
+    ['"Size exchange" hands over every time', 'Add an action to a skill', 'AI Agent has no way to swap a size. Add Create exchange to your Exchanges skill and it can finish the job.'],
+    ['Delay questions spike every Monday', 'Add a shipping delay notice', 'Weekend orders ship on Tuesday. A short notice in your shipping guidance would answer these before they come in.'],
+    ['"Gift wrap" has no answer in your knowledge', 'Write a help article', 'Shoppers asked 86 times this month. Gaia wrote a first draft from your past replies.'],
   ];
+  const PRIORITY = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5.14 11.81L8 8.76l2.86 3.05M5.14 7.24L8 4.18l2.86 3.06" stroke="#D90B28" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const SHOPIFY = '<img src="assets/v4/shopify.svg" alt="">';
   const oppList = $('[data-opp-list]'), oppCount = $('[data-opp-count]');
   if (oppList) {
     let next = 0, left = 9;
     const oppCard = () => {
-      const [title, action, body, cta] = OPPS[next++ % OPPS.length];
+      const [title, action, body] = OPPS[next++ % OPPS.length];
       const el = document.createElement('div');
       el.className = 'opp-card';
-      el.innerHTML = `<div class="opp-tags"><span class="opp-tag hi"><i class="ic sm" data-icon="priority"></i>High</span><span class="opp-tag">Northbound Outdoor</span></div>
-        <strong>${title}</strong><b>${action}</b><p>${body}</p>
-        <div class="opp-btns"><button type="button" class="btn btn-primary" data-apply>${cta}</button><button type="button" class="btn btn-ghost" data-dismiss>Dismiss</button></div>`;
-      iconize(el);
+      el.innerHTML = `<div class="opp-tags"><span class="opp-tag">${PRIORITY}Critical</span><span class="opp-tag">${SHOPIFY}northbound-outdoor</span></div>
+        <div class="opp-text"><strong>${title}</strong><b>${action}</b><p>${body}</p></div>
+        <div class="opp-btns"><button type="button" class="ob ob-primary" data-apply>Approve</button><button type="button" class="ob ob-secondary" data-dismiss>Dismiss</button><button type="button" class="ob ob-tertiary" data-ask>Ask Gaia</button></div>`;
       return el;
     };
     const replace = async (card, applied) => {
@@ -811,8 +805,7 @@
         const btn = $('[data-apply]', card);
         btn.textContent = 'Applying…';
         await wait(RM ? 0 : 700);
-        btn.innerHTML = '<i class="ic sm inv" data-icon="check"></i>Done';
-        iconize(btn);
+        btn.textContent = 'Done';
         burst(...centerOf(btn), { names: ['sparkle', 'check', 'smile'], n: 7, spread: 110 });
         await wait(RM ? 0 : 650);
       }
@@ -827,8 +820,10 @@
     };
     oppList.append(oppCard(), oppCard());
     oppList.addEventListener('click', e => {
-      const b = e.target.closest('[data-apply], [data-dismiss]');
-      if (b) replace(b.closest('.opp-card'), b.matches('[data-apply]'));
+      const b = e.target.closest('[data-apply], [data-dismiss], [data-ask]');
+      if (!b) return;
+      if (b.matches('[data-ask]')) { toast('Gaia opens with this opportunity loaded.', 'sparkle'); return; }
+      replace(b.closest('.opp-card'), b.matches('[data-apply]'));
     });
   }
 
@@ -858,67 +853,6 @@
     b.classList.toggle('on', on);
     b.textContent = on ? 'AI allowed' : 'Handover';
   }));
-
-  /* ───────── Analytics: metric cards and a sortable breakdown table ───────── */
-  (() => {
-    const app = $('[data-an]');
-    if (!app) return;
-    // Each card: name, value, change, whether the change is good, and a week of points for the trend line
-    const CARDS = [
-      ['Average CSAT', '4.52', '2%', true, [4.3, 4.4, 4.35, 4.42, 4.5, 4.46, 4.52]],
-      ['Resolution time', '0h 48m', '2%', true, [55, 52, 54, 50, 49, 51, 48]],
-      ['Messages per ticket', '4.76', '10%', false, [4.3, 4.4, 4.5, 4.45, 4.6, 4.7, 4.76]],
-      ['First response time', '0h 1m', '14%', true, [1.6, 1.5, 1.4, 1.3, 1.25, 1.1, 1]],
-    ];
-    const spark = pts => {
-      const lo = Math.min(...pts), hi = Math.max(...pts), W = 120, H = 28;
-      const xy = pts.map((v, i) => [i * W / (pts.length - 1), H - 3 - (v - lo) / (hi - lo || 1) * (H - 6)]);
-      const line = xy.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join('');
-      return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><path d="${line}L${W} ${H}L0 ${H}Z" class="sp-fill"/><path d="${line}" class="sp-line"/></svg>`;
-    };
-    $('[data-an-cards]', app).innerHTML = CARDS.map(([name, val, ch, good, pts]) => {
-      const rising = pts[pts.length - 1] > pts[0];
-      return `<div class="an-card"><span>${name}</span><div class="an-val"><b>${val}</b><em class="${good ? 'good' : 'bad'}"><i class="ic sm" data-icon="${rising ? 'up' : 'down'}"></i>${ch}</em></div>${spark(pts)}</div>`;
-    }).join('');
-    iconize($('[data-an-cards]', app));
-
-    // Rows hold raw numbers for sorting; fmt turns them into what the table shows
-    const min = v => `${Math.floor(v / 60)}h ${String(v % 60).padStart(2, '0')}m`;
-    const VIEWS = {
-      agents: { cols: ['Agent', 'Tickets closed', 'CSAT', 'First response', 'Resolution'], fmt: [null, null, v => v.toFixed(2), v => `${v}m`, min], rows: [
-        ['AI Agent', 1840, 4.61, 0, 6], ['Lena Park', 312, 4.58, 3, 52], ['Theo Martin', 284, 4.47, 5, 61], ['Priya Shah', 251, 4.66, 4, 44], ['Marco Bianchi', 198, 4.39, 7, 73]] },
-      channel: { cols: ['Channel', 'Tickets created', 'CSAT', 'First response', 'Resolution'], fmt: [null, null, v => v.toFixed(2), v => `${v}m`, min], rows: [
-        ['Email', 1820, 4.41, 38, 214], ['Chat', 2410, 4.63, 1, 22], ['Voice', 2390, 4.52, 0, 9], ['SMS', 640, 4.57, 4, 31], ['Social', 1180, 4.6, 2, 18]] },
-      sla: { cols: ['Policy', 'Tickets', 'Achieved', 'Breached', 'Breach type'], fmt: [null, null, v => `${v}%`, null, null], rows: [
-        ['Email, 4h first reply', 1820, 96, 73, 'First response'], ['Chat, 2m first reply', 2410, 98, 48, 'First response'], ['Email, 24h resolution', 1820, 91, 164, 'Resolution'], ['Social, 1h first reply', 1180, 97, 35, 'First response']] },
-    };
-    const head = $('[data-an-head]', app), body = $('[data-an-body]', app);
-    let view = 'agents', sortBy = 1, desc = true;
-    function draw(animate) {
-      const V = VIEWS[view];
-      const rows = [...V.rows].sort((a, b) => {
-        const x = a[sortBy], y = b[sortBy];
-        const d = typeof x === 'number' ? x - y : String(x).localeCompare(y);
-        return desc ? -d : d;
-      });
-      head.innerHTML = `<tr>${V.cols.map((c, i) => `<th scope="col"${i === sortBy ? ` aria-sort="${desc ? 'descending' : 'ascending'}"` : ''}><button type="button" data-col="${i}">${c}<span aria-hidden="true">${i === sortBy ? (desc ? '↓' : '↑') : ''}</span></button></th>`).join('')}</tr>`;
-      body.innerHTML = rows.map((r, k) => `<tr${animate ? ` class="in" style="--i:${k}"` : ''}>${r.map((v, i) => `<td>${V.fmt[i] ? V.fmt[i](v) : v}</td>`).join('')}</tr>`).join('');
-    }
-    head.addEventListener('click', e => {
-      const b = e.target.closest('[data-col]');
-      if (!b) return;
-      const c = +b.dataset.col;
-      desc = c === sortBy ? !desc : c !== 0;
-      sortBy = c;
-      draw(false);
-    });
-    $$('.an-seg button', app).forEach(b => b.addEventListener('click', () => {
-      $$('.an-seg button', app).forEach(o => o.setAttribute('aria-pressed', o === b));
-      view = b.dataset.view; sortBy = 1; desc = true;
-      draw(!RM);
-    }));
-    draw(false);
-  })();
 
   /* ───────── Actions in Skills: drag or click an action into a step ───────── */
   const skill = $('[data-skill]');
