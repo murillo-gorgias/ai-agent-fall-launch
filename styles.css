@@ -212,7 +212,7 @@ html.js [data-chat] > .show { opacity: 1; transform: none; transition: opacity .
 .logo-row { display: flex; align-items: center; gap: 40px; width: max-content; padding-right: 40px; list-style: none; animation: marquee 60s linear infinite; }
 .logo-track:hover .logo-row { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
-.lg { width: 208px; height: 73px; display: grid; place-items: center; padding: 14px 48px; background: #f3f1f0; border-radius: 8px; flex: none; }
+.lg { width: 208px; height: 73px; display: grid; place-items: center; padding: 14px 48px; flex: none; }
 .lg img { max-width: 112px; max-height: 45px; width: auto; height: auto; }
 
 /* ─── Divider row ─── */
