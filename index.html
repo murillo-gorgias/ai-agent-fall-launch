@@ -77,6 +77,25 @@
   </div>
 </section>
 
+<!-- ───────────────────────── Customer logos (placeholder) ─────────────────────────
+     PLACEHOLDER: invented wordmarks until PMM shares the new customer logos. Same strip as gorgias.com/ai-agent. -->
+<section class="logos" aria-label="Customer logos">
+  <p class="kicker logos-kicker">Trusted by leading ecommerce brands</p>
+  <div class="logo-track" data-logos>
+    <ul class="logo-row">
+      <li class="lg lg-serif">Northbound</li>
+      <li class="lg lg-script">maya wears</li>
+      <li class="lg lg-caps">CASTELLAN</li>
+      <li class="lg lg-bold">ana &amp; lou</li>
+      <li class="lg lg-thin">ALICE + OWEN</li>
+      <li class="lg lg-serif2">Mizzen+Field</li>
+      <li class="lg lg-mono">TOMMY JUNE</li>
+      <li class="lg lg-wide">T U S K</li>
+      <li class="lg lg-round">Comfrt</li>
+    </ul>
+  </div>
+</section>
+
 <div class="divider" aria-hidden="true" data-divider="heart,thumbs,laugh,wow,love,smile,wink,party,stars,hug,sparkle,check"></div>
 
 <!-- ───────────────────────── 01 Socials ───────────────────────── -->
@@ -214,19 +233,42 @@
     </header>
 
     <div class="gaia-grid">
-      <!-- Gaia Hub: one list of opportunities -->
+      <!-- Gaia Hub: the home screen. Metrics, welcome, the prompt box, the four quick actions (a cursor tours them), then opportunities. -->
       <article class="card hub rise">
         <div class="hub-copy">
           <div class="kicker">Gaia Hub</div>
           <h3 class="h3">One place for everything Gaia finds.</h3>
-          <p>Gaia reads your conversations and spots the patterns: questions AI Agent hands over, answers that conflict, intents with no skill. Each one lands in Gaia Hub with the fix ready to apply.</p>
+          <p>Gaia Hub is Gaia's home. Ask it anything about your support, pick a quick action for your queue, your workflows, AI Agent or your routines, and work through the opportunities it found while you were away.</p>
         </div>
-        <div class="opps" data-opps>
-          <div class="opps-head">
-            <div><strong>Opportunities</strong><span class="qty" data-opp-count>9</span></div>
-            <span class="view-all">View all</span>
+        <div class="hub-screen" data-hub>
+          <div class="hub-metrics" aria-hidden="true">
+            <div><span>Automation rate</span><b>62%</b></div>
+            <div><span>Cost saved</span><b>$18,400</b></div>
+            <div><span>Average CSAT</span><b>4.8</b></div>
           </div>
-          <div class="opps-list" data-opp-list></div>
+          <div class="hub-welcome display"><span>Welcome back, Jordan!</span><strong>Let's continue growing your business</strong></div>
+          <div class="hub-prompt" aria-hidden="true">
+            <p class="hub-ph">Type @ to reference...</p>
+            <div class="hub-prompt-bar"><span class="hub-act"><i class="ic sm" data-icon="plus"></i><em>Act</em><i class="ic sm" data-icon="chevron"></i></span><i class="ic sm hub-send" data-icon="send"></i></div>
+          </div>
+          <div class="hub-quick" data-quick>
+            <div class="hub-btns">
+              <button type="button" data-q="support" aria-pressed="false"><i class="ic sm" data-icon="chat"></i>Support</button>
+              <button type="button" data-q="agent" aria-pressed="false"><i class="ic sm" data-icon="flower"></i>AI Agent</button>
+              <button type="button" data-q="workflows" aria-pressed="false"><i class="ic sm" data-icon="workflow"></i>Workflows</button>
+              <button type="button" data-q="routines" aria-pressed="false"><i class="ic sm" data-icon="clock"></i>Routines</button>
+            </div>
+            <ul class="hub-menu" data-menu hidden></ul>
+            <svg class="hub-cursor" data-cursor viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 3.2 19 11.6l-6.2 1.2-3.3 5.6z" fill="#fff" stroke="#1B1A19" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="opps" data-opps>
+            <div class="opps-head">
+              <div><strong>Opportunities</strong><span class="qty" data-opp-count>9</span></div>
+              <span class="view-all">View all</span>
+            </div>
+            <p class="opps-sub">Gaia reviews conversations to identify patterns and surface opportunities</p>
+            <div class="opps-list" data-opp-list></div>
+          </div>
         </div>
       </article>
 
@@ -272,7 +314,7 @@
           <div class="share-pop">
             <div class="share-pop-head"><strong>Share chat</strong><span aria-hidden="true">&times;</span></div>
             <p>Any messages you add after sharing stay private.</p>
-            <div class="share-link"><span>https://gorgias.gaia/share/791eb7ff-2c4a</span><button class="share-copy" type="button" data-share><i class="ic sm inv" data-icon="copy"></i><b>Copy link</b></button></div>
+            <div class="share-link"><span>https://gorgias.gaia/share/791eb7ff-2c4a</span><button class="share-stop" type="button" data-share-stop><i class="ic sm" data-icon="stop"></i><b>Stop sharing</b></button><button class="share-copy" type="button" data-share><i class="ic sm inv" data-icon="copy"></i><b>Copy link</b></button></div>
           </div>
         </div>
       </article>
@@ -286,10 +328,10 @@
           <div class="cov-row cov-th"><span>Intent</span><span>Tickets</span><span>Linked skill</span><span>Status</span></div>
           <div class="cov-group">Shipping</div>
           <div class="cov-row"><div><strong>Information</strong><small>Shipping policies and pricing</small></div><div class="cov-share"><b>60%</b><i style="--w:60%"></i></div><span class="cov-skill">Shipping to France</span><button class="cov-status on" type="button" aria-pressed="true">AI allowed</button></div>
-          <div class="cov-row"><div><strong>Change address</strong><small>Update a delivery address</small></div><div class="cov-share"><b>&ndash;</b></div><button class="cov-link" type="button" data-skill-name="Update address">Link to skill</button><button class="cov-status on" type="button" aria-pressed="true">AI allowed</button></div>
+          <div class="cov-row"><div><strong>Change address</strong><small>Update a delivery address</small></div><div class="cov-share"><b>&ndash;</b></div><button class="cov-link" type="button" data-skill-name="Update my delivery address">Link to skill</button><button class="cov-status on" type="button" aria-pressed="true">AI allowed</button></div>
           <div class="cov-group">Order</div>
-          <div class="cov-row"><div><strong>Status</strong><small>Order status and tracking</small></div><div class="cov-share"><b>40%</b><i style="--w:40%"></i></div><button class="cov-link" type="button" data-skill-name="Order status">Link to skill</button><button class="cov-status on" type="button" aria-pressed="true">AI allowed</button></div>
-          <div class="cov-row"><div><strong>Damaged</strong><small>Broken items received</small></div><div class="cov-share"><b>&ndash;</b></div><button class="cov-link" type="button" data-skill-name="Damaged items">Link to skill</button><button class="cov-status" type="button" aria-pressed="false">Handover</button></div>
+          <div class="cov-row"><div><strong>Status</strong><small>Order status and tracking</small></div><div class="cov-share"><b>40%</b><i style="--w:40%"></i></div><button class="cov-link" type="button" data-skill-name="Check order status">Link to skill</button><button class="cov-status on" type="button" aria-pressed="true">AI allowed</button></div>
+          <div class="cov-row"><div><strong>Damaged</strong><small>Broken items received</small></div><div class="cov-share"><b>&ndash;</b></div><button class="cov-link" type="button" data-skill-name="Lost package">Link to skill</button><button class="cov-status" type="button" aria-pressed="false">Handover</button></div>
         </div>
       </article>
     </div>

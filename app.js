@@ -91,7 +91,9 @@
   customElements.define('bubble-emoji', BubbleEmoji);
   const emo = (n, small, attrs = '') => `<bubble-emoji name="${n}"${small ? ' small' : ''}${attrs ? ' ' + attrs : ''}></bubble-emoji>`;
   const makeEmo = (n, cls) => { const el = document.createElement('bubble-emoji'); el.name = n; if (cls) el.className = cls; return el; };
-  const emojify = html => html.replace(/:([a-z-]+):/g, (m, n) => (DRAW[n] ? emo(n, true, 'class="ie"') : m));
+  // :name: in chat copy becomes a real emoji (the viewer's system font), as AI Agent itself sends. Bubble emoji stay for everything decorative.
+  const INLINE = { heart: '\u2764\uFE0F', love: '\u{1F60D}', stars: '\u{1F929}', wow: '\u{1F62E}', wink: '\u{1F609}', thinking: '\u{1F914}', sparkle: '\u2728', thumbs: '\u{1F44D}', party: '\u{1F973}', laugh: '\u{1F602}', smile: '\u{1F642}', hug: '\u{1F917}', check: '\u2705', tongue: '\u{1F61C}', relieved: '\u{1F60C}', cool: '\u{1F60E}', calm: '\u{1F60A}', concerned: '\u{1F615}', polite: '\u{1F60A}' };
+  const emojify = html => html.replace(/:([a-z-]+):/g, (m, n) => (INLINE[n] ? `<span class="ie" role="img" aria-label="${n}">${INLINE[n]}</span>` : m));
 
   // Boil: while the pointer is on an emoji (or drags it), its face lines redraw about six times a second.
   // After the pointer leaves, it keeps going for a moment, then settles back on its first drawing.
@@ -135,6 +137,14 @@
     share: '<path d="M12 15V3.5M7.5 8 12 3.5 16.5 8"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/>',
     copy: '<rect x="8.5" y="8.5" width="12" height="12" rx="2.5"/><path d="M15.5 8.5V6A2.5 2.5 0 0 0 13 3.5H6A2.5 2.5 0 0 0 3.5 6v7A2.5 2.5 0 0 0 6 15.5h2.5"/>',
     check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+    stop: '<circle cx="12" cy="12" r="8.5"/><rect x="9" y="9" width="6" height="6" rx="1"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    chevron: '<path d="m6 9 6 6 6-6"/>',
+    send: '<path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z"/>',
+    chat: '<path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h7A2.5 2.5 0 0 1 16 6.5v4a2.5 2.5 0 0 1-2.5 2.5H9l-4 3z"/><path d="M16 9h1.5A2.5 2.5 0 0 1 20 11.5v4a2.5 2.5 0 0 1-2.5 2.5H17v2.5l-3-2.5h-2"/>',
+    flower: '<path d="M12 3c1.6 2.6 1.6 5.4 0 8-1.6-2.6-1.6-5.4 0-8zM12 21c-1.6-2.6-1.6-5.4 0-8 1.6 2.6 1.6 5.4 0 8zM3 12c2.6-1.6 5.4-1.6 8 0-2.6 1.6-5.4 1.6-8 0zM21 12c-2.6 1.6-5.4 1.6-8 0 2.6-1.6 5.4-1.6 8 0z"/>',
+    workflow: '<rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M9 6h5a3 3 0 0 1 3 3v6M6 9v6a3 3 0 0 0 3 3h6"/>',
+    clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
   };
   const iconize = (root = document) => $$('[data-icon]', root).forEach(el => {
     el.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="#1B1A19" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">${ICON[el.dataset.icon] || ''}</svg>`;
@@ -266,7 +276,7 @@
      Built from the Figma flow. One master clock drives everything, so any moment can be frozen:
      ?t=4.2 freezes a moment, ?debug shows a scrubber, ?speed=1.2 plays faster. */
   (() => {
-    const T = { morph: 5.9, phone: 6.35, text: 6.35, pillIn: 7.1, ai: 7.95, reply: 8.45, clean: 11.55, end: 12.25 };
+    const T = { morph: 4.25, phone: 4.7, text: 4.7, pillIn: 5.45, ai: 6.3, reply: 6.8, clean: 9.9, end: 10.6 };  // inbox phase shortened 2026-10-09 (stakeholder note)
     const ARRIVE = .68;
     const HICON = {
       ig: '<span class="ico ig"><img src="assets/v3/ig-outline.svg" alt=""></span>',
@@ -274,29 +284,29 @@
       wa: '<span class="ico wa"><img src="assets/v3/wa-glyph.svg" alt=""></span>',
     };
     const G = [
-      { key: 'ig', preview: null, clear: 9.3, arr: [.5, 2.15, 2.68, 3.05, 3.33, 3.54], msgs: [
+      { key: 'ig', preview: null, clear: 7.65, arr: [.36, 1.55, 1.93, 2.2, 2.4, 2.55], msgs: [
         ['maya.wears', 'Are the waxed jackets true to size?'],
         ['jordan.outdoors', 'Do you ship to Canada? Checking before I order.'],
         ['noor.k', 'Replied to your story: need this in olive!'],
         ['ella.makes', 'Will the linen shirts be restocked soon?'],
         ['sam.runs', 'Can I still change the size on my order?'],
-        ['maya.wears', 'Are the waxed jackets true to size?'] ] },
-      { key: 'fb', preview: 2.75, clear: 10.1, arr: [2.75, 4.05, 4.29, 4.48, 4.63, 4.75], msgs: [
+        ['kai.studio', 'Is the olive jacket back in stock yet?'] ] },
+      { key: 'fb', preview: 1.98, clear: 8.45, arr: [1.98, 2.92, 3.09, 3.23, 3.33, 3.42], msgs: [
         ['Lena Park', 'Can I swap my tote for the olive one?'],
         ['Theo Martin', "What's your return window on sale items?"],
         ['Priya Shah', "The discount code isn't working at checkout."],
         ['Marco Bianchi', 'Do you have a store in Chicago I can visit?'],
         ['Ava Chen', 'How long does shipping take to Texas?'],
-        ['maya.wears', 'Are the waxed jackets true to size?'] ] },
-      { key: 'wa', preview: 4.2, clear: 10.9, arr: [4.2, 5.22, 5.38, 5.51, 5.61, 5.69], msgs: [
+        ['Nina Alvarez', 'Can I change the delivery address on my order?'] ] },
+      { key: 'wa', preview: 3.02, clear: 9.25, arr: [3.02, 3.76, 3.87, 3.97, 4.04, 4.1], msgs: [
         ['Sam Okafor', 'My order said Tuesday. Where is it now?'],
         ['+1 415 555 0199', 'Hello? Is anyone there to help me?'],
         ['Ruth Adeyemi', 'Do you gift wrap orders for birthdays?'],
         ['Dan Kowalski', 'Is the XL back in stock in charcoal?'],
         ['Mia Rossi', 'Can I get an invoice for my last order?'],
-        ['maya.wears', 'Are the waxed jackets true to size?'] ] },
+        ['Jonas Weber', 'Any update on my refund from last week?'] ] },
     ];
-    const SHIFTS = [3.45, 4.7];
+    const SHIFTS = [2.48, 3.38];
 
     const cardHTML = (key, name, msg, front) =>
       `<div class="ncard"><div class="cbg"></div><div class="cmsg">${HICON[key]}<div class="tx"><div class="top"><b>${name}</b><em>now</em></div><p>${msg}</p></div></div>` +
@@ -610,6 +620,9 @@
   }
   makePile($('.close'), ['smile', 'heart', 'laugh', 'love', 'thumbs', 'wow', 'party', 'wink', 'stars', 'calm', 'hug', 'cool', 'tongue', 'sparkle', 'relieved', 'check', 'thinking', 'concerned', 'heart', 'smile', 'laugh', 'love', 'party', 'thumbs'], 24);
 
+  /* ───────── Customer logos: the row repeats once so the marquee loops without a seam ───────── */
+  $$('[data-logos] .logo-row').forEach(row => { if (!RM) row.append(...[...row.children].map(li => li.cloneNode(true))); });
+
   /* ───────── Draggable emoji: they spring back home ───────── */
   $$('[data-drag]').forEach(el => {
     el.draggable = false;
@@ -749,7 +762,7 @@
       if (!en.isIntersecting) return;
       o.disconnect();
       await wait(900);
-      const parts = html.split(/(<bubble-emoji[\s\S]*?<\/bubble-emoji>)/).flatMap(p => (p.startsWith('<bubble-emoji') ? [p] : [...p]));
+      const parts = html.split(/(<span class="ie"[\s\S]*?<\/span>)/).flatMap(p => (p.startsWith('<span') ? [p] : [...p]));
       let out = '';
       for (const p of parts) { out += p; el.innerHTML = out; await wait(14); }
     }, { threshold: .6 }).observe(el);
@@ -838,6 +851,75 @@
     toast('Link copied. Your teammate sees the whole chat.', 'wink');
     setTimeout(() => { b.classList.remove('done'); $('b', b).textContent = 'Copy link'; $('.ic', b).dataset.icon = 'copy'; iconize(b); }, 2600);
   }));
+
+  $$('[data-share-stop]').forEach(b => b.addEventListener('click', () => {
+    const on = b.classList.toggle('done');
+    $('b', b).textContent = on ? 'Sharing stopped' : 'Stop sharing';
+    $('.ic', b).dataset.icon = on ? 'check' : 'stop';
+    iconize(b);
+    toast(on ? 'Link disabled. The chat is private again.' : 'Sharing is back on.', on ? 'relieved' : 'wink');
+  }));
+
+  /* Gaia Hub quick actions: a cursor tours the four buttons and opens each one's suggestions; a real pointer takes over at any time */
+  const QUICK = {
+    support: ['Summarize the top issues in my queue', 'Triage and tag recent tickets', "Recap last week's support performance"],
+    agent: ['Show me what AI Agent handed over today', 'Which intents have no skill yet?', 'Draft a skill for size exchanges'],
+    workflows: ['Which rules fired most this week?', 'Find rules that never run', 'Build a rule for late deliveries'],
+    routines: ['Set a Monday backlog digest', 'Review my routines for this month', 'Pause the weekend CSAT report'],
+  };
+  $$('[data-hub]').forEach(hub => {
+    const quick = $('[data-quick]', hub), btns = $$('.hub-btns button', hub), menu = $('[data-menu]', hub), cursor = $('[data-cursor]', hub);
+    let auto = null, manual = false;
+    const open = key => {
+      btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.q === key));
+      const b = btns.find(x => x.dataset.q === key);
+      menu.innerHTML = QUICK[key].map(t => `<li>${t}</li>`).join('');
+      menu.hidden = false;
+      const qr = quick.getBoundingClientRect(), br = b.getBoundingClientRect();
+      menu.style.setProperty('--mx', `${Math.max(0, Math.min(br.left - qr.left, qr.width - menu.offsetWidth))}px`);
+    };
+    const close = () => { menu.hidden = true; btns.forEach(b => b.setAttribute('aria-pressed', 'false')); };
+    const moveTo = (x, y) => { cursor.style.setProperty('--cx', `${x}px`); cursor.style.setProperty('--cy', `${y}px`); };
+    const at = (el, fx = .5, fy = .5) => { const qr = quick.getBoundingClientRect(), r = el.getBoundingClientRect(); return [r.left - qr.left + r.width * fx, r.top - qr.top + r.height * fy]; };
+    async function tour() {
+      if (RM) { open('support'); $$('li', menu)[0].classList.add('hover'); return; }
+      cursor.classList.add('on');
+      for (let round = 0; round < 2 && !manual; round++) {
+        for (const b of btns) {
+          if (manual) break;
+          moveTo(...at(b, .55, .6));
+          await wait(750); if (manual) break;
+          b.classList.add('hover');
+          await wait(220); if (manual) break;
+          cursor.classList.add('press');
+          open(b.dataset.q);
+          await wait(140);
+          cursor.classList.remove('press');
+          b.classList.remove('hover');
+          const items = $$('li', menu);
+          for (const li of items) {
+            if (manual) break;
+            moveTo(...at(li, .45, .5));
+            await wait(560);
+            items.forEach(x => x.classList.remove('hover'));
+            li.classList.add('hover');
+            await wait(260);
+          }
+          await wait(500);
+          if (!manual) close();
+        }
+      }
+      if (!manual) { open('support'); moveTo(...at(btns[0], .55, .6)); await wait(800); cursor.classList.remove('on'); }
+    }
+    const takeOver = () => { if (manual) return; manual = true; cursor.classList.remove('on'); btns.forEach(b => b.classList.remove('hover')); };
+    btns.forEach(b => {
+      b.addEventListener('pointerenter', () => { takeOver(); open(b.dataset.q); });
+      b.addEventListener('click', () => { takeOver(); open(b.dataset.q); });
+    });
+    quick.addEventListener('pointerleave', () => { if (manual) close(); });
+    menu.addEventListener('click', e => { const li = e.target.closest('li'); if (li) { toast(`Gaia starts: ${li.textContent}`, 'sparkle'); } });
+    new IntersectionObserver(([en], o) => { if (en.isIntersecting) { o.disconnect(); auto = tour(); } }, { threshold: .4 }).observe(quick);
+  });
 
   /* AI coverage: link a skill, switch an intent between AI and your team */
   $$('[data-cov] .cov-link').forEach(b => b.addEventListener('click', () => {
