@@ -574,17 +574,40 @@ html.js .rise.in { opacity: 1; transform: none; transition: opacity .8s var(--ea
   .trial { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px; }
   .opp-card { padding: 16px; }
   .card.hub { padding: 20px 16px; gap: 24px; }
-  .hub-screen { padding: 20px 14px; gap: 32px; }
-  .hub-quick { min-height: 0; margin-top: -16px; }
-  .hub-welcome strong { font-size: 22px; }
+  .hub-screen { padding: 20px 14px; gap: 28px; }
+  /* Three stats on one line: smaller type, labels truncate before they wrap */
+  .hub-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: 100%; }
+  .hub-metrics div { min-width: 0; gap: 2px; }
+  .hub-metrics span { font-size: 10.5px; letter-spacing: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hub-metrics b { font-size: 13px; gap: 2px 5px; white-space: nowrap; flex-wrap: wrap; }
+  .hub-metrics i { font-size: 10.5px; }
+  .hub-metrics i svg { width: 10px; height: 10px; }
+  .hub-welcome { gap: 4px; margin: -4px 0 -10px; }
+  .hub-welcome span { font-size: 15px; }
+  .hub-welcome strong { font-size: 20px; }
+  .hub-prompt { min-height: 84px; padding: 10px 12px; }
+  .hub-ph { font-size: 13px; }
+  .hub-quick { min-height: 0; margin-top: -12px; }
+  .hub-btns { gap: 8px; }
+  .hub-btns button { height: 30px; font-size: 13px; padding: 0 10px 0 7px; }
+  .hub-btns button .ic.sm svg { width: 14px; height: 14px; }
+  /* The dropdown sits in the flow below the buttons and wraps its lines instead of running past the box */
+  .hub-menu { position: static; width: 100%; margin-top: 8px; min-width: 0; }
+  .hub-menu li { white-space: normal; font-size: 13px; line-height: 1.3; padding: 7px 10px; }
+  .hub-cursor { display: none; }
+  .hub-screen .opps { margin-top: -4px; }
+  .opps-sub { font-size: 11.5px; }
+  .hub-screen .opp-text strong { font-size: 13.5px; }
+  .hub-screen .opp-btns { gap: 5px; }
+  .hub-screen .opp-card { padding: 14px; }
+  .hub-screen .opp-tags { flex-wrap: wrap; }
+  .hub-screen .opp-btns .ob { height: 30px; padding: 0 10px; font-size: 12.5px; }
+  .hub-screen .opp-btns .ob-tertiary { padding: 0 6px; }
   .logos { padding: 64px 0; }
   .logos-title { font-size: 30px; }
-  .hub-menu { position: static; width: 100%; margin-top: 8px; }
   .share-link { flex-wrap: wrap; padding: 8px; gap: 6px; }
   .share-link span { flex: 1 1 100%; }
   .share-link .share-stop { margin-left: 0; }
-  .hub-metrics { flex-wrap: wrap; justify-content: center; gap: 12px 28px; }
-  .hub-metrics span { white-space: nowrap; }
   .logo-row { gap: 16px; padding-right: 16px; }
   .lg { width: 160px; height: 60px; padding: 10px 24px; }
   .foot-in { flex-direction: column; align-items: flex-start; }
