@@ -861,11 +861,11 @@
   }));
 
   /* Gaia Hub quick actions: a cursor tours the four buttons and opens each one's suggestions; a real pointer takes over at any time */
-  const QUICK = {
+  const QUICK = {  // copy from Murillo's Figma lists (Landing Page canvas, 2026-10-09)
     support: ['Summarize the top issues in my queue', 'Triage and tag recent tickets', "Recap last week's support performance"],
-    agent: ['Show me what AI Agent handed over today', 'Which intents have no skill yet?', 'Draft a skill for size exchanges'],
-    workflows: ['Which rules fired most this week?', 'Find rules that never run', 'Build a rule for late deliveries'],
-    routines: ['Set a Monday backlog digest', 'Review my routines for this month', 'Pause the weekend CSAT report'],
+    agent: ['Optimize my AI Agent setup', 'Audit my skills and tell me which ones to improve'],
+    workflows: ['Help me create a new rule', 'Find and clean up duplicate or unused macros', 'Audit my rules and flag redundant ones'],
+    routines: ['Send a weekly AI agent digest with the top fix', 'Summarize my daily queue and top priority'],
   };
   $$('[data-hub]').forEach(hub => {
     const quick = $('[data-quick]', hub), btns = $$('.hub-btns button', hub), menu = $('[data-menu]', hub), cursor = $('[data-cursor]', hub);
