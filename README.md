@@ -45,7 +45,7 @@ Visitors who turn on reduced motion in their system settings get a still version
 - `v3/`, `v2/` and `v1/`: the earlier versions, each with its own three files.
 - `versions.css`: the version switcher bar, shared by all four.
 - `assets/v3/`: version 3's bubble emoji (SVG) and channel icons.
-- `assets/v4/`: version 4's free-trial photo, the AI coverage product screen and the Shopify mark.
+- `assets/v4/`: version 4's free-trial photo, the AI coverage product screen (exported from Figma at 2x) and the Shopify mark.
 - `assets/`: the earlier versions' 3D emoji, objects, channel icons and avatars, the product photos, plus the Gorgias logos and fonts.
 
 ## Placeholders
@@ -53,6 +53,7 @@ Visitors who turn on reduced motion in their system settings get a still version
 These are invented for the concept and must be replaced before real use:
 
 - The customer quote from Jordan Ellis at Northbound Outdoor
+- The customer logo strip under the hero: invented wordmarks, waiting for the real logos
 - Every shopper, store and product name
 - Every figure in the Gaia Hub, AI coverage and Analytics mocks and the onboarding checklist
 - The phone number (415) 555-0130 in versions 1 to 3
