@@ -77,25 +77,6 @@
   </div>
 </section>
 
-<!-- ───────────────────────── Customer logos (placeholder) ─────────────────────────
-     PLACEHOLDER: invented wordmarks until PMM shares the new customer logos. Same strip as gorgias.com/ai-agent. -->
-<section class="logos" aria-label="Customer logos">
-  <p class="kicker logos-kicker">Trusted by leading ecommerce brands</p>
-  <div class="logo-track" data-logos>
-    <ul class="logo-row">
-      <li class="lg lg-serif">Northbound</li>
-      <li class="lg lg-script">maya wears</li>
-      <li class="lg lg-caps">CASTELLAN</li>
-      <li class="lg lg-bold">ana &amp; lou</li>
-      <li class="lg lg-thin">ALICE + OWEN</li>
-      <li class="lg lg-serif2">Mizzen+Field</li>
-      <li class="lg lg-mono">TOMMY JUNE</li>
-      <li class="lg lg-wide">T U S K</li>
-      <li class="lg lg-round">Comfrt</li>
-    </ul>
-  </div>
-</section>
-
 <div class="divider" aria-hidden="true" data-divider="heart,thumbs,laugh,wow,love,smile,wink,party,stars,hug,sparkle,check"></div>
 
 <!-- ───────────────────────── 01 Socials ───────────────────────── -->
@@ -233,7 +214,8 @@
     </header>
 
     <div class="gaia-grid">
-      <!-- Gaia Hub: the home screen. Metrics, welcome, the prompt box, the four quick actions (a cursor tours them), then opportunities. -->
+      <!-- Gaia Hub: the home screen on a photo stage (Figma 172:7730). Metrics, welcome, the prompt box,
+           the four quick actions (a cursor tours them), then opportunities. -->
       <article class="card hub rise">
         <div class="hub-copy">
           <div class="kicker">Gaia Hub</div>
@@ -242,11 +224,11 @@
         </div>
         <div class="hub-screen" data-hub>
           <div class="hub-metrics" aria-hidden="true">
-            <div><span>Automation rate</span><b>62%</b></div>
-            <div><span>Cost saved</span><b>$18,400</b></div>
-            <div><span>Average CSAT</span><b>4.8</b></div>
+            <div><span>Average CSAT</span><b>4.1 <i class="up"><svg viewBox="0 0 12 12"><path d="M2.5 8.5 5.5 5.5l2 2 2.5-3M7 4.5h3v3"/></svg>5%</i></b></div>
+            <div><span>Resolution time</span><b>12m 29s <i class="up"><svg viewBox="0 0 12 12"><path d="M2.5 8.5 5.5 5.5l2 2 2.5-3M7 4.5h3v3"/></svg>3m</i></b></div>
+            <div><span>First time response</span><b>10s <i class="down"><svg viewBox="0 0 12 12"><path d="M2.5 3.5 5.5 6.5l2-2 2.5 3M7 7.5h3v-3"/></svg>2s</i></b></div>
           </div>
-          <div class="hub-welcome display"><span>Welcome back, Jordan!</span><strong>Let's continue growing your business</strong></div>
+          <div class="hub-welcome display"><span>Welcome back, Sophie!</span><strong>Let&rsquo;s continue growing your business</strong></div>
           <div class="hub-prompt" aria-hidden="true">
             <p class="hub-ph">Type @ to reference...</p>
             <div class="hub-prompt-bar"><span class="hub-act"><i class="ic sm" data-icon="plus"></i><em>Act</em><i class="ic sm" data-icon="chevron"></i></span><i class="ic sm hub-send" data-icon="send"></i></div>
@@ -326,10 +308,10 @@
         <p>AI coverage lists every intent your customers raise, with its ticket share. Link a skill to an intent, or keep the intent for your team. Anything without a skill gets answered from your knowledge.</p>
         <div class="mini cov" data-cov>
           <div class="cov-row cov-th"><span>Intent</span><span>Tickets</span><span>Linked skill</span><span>Status</span></div>
-          <div class="cov-group">Shipping</div>
+          <div class="cov-group"><i class="ic sm" data-icon="chevron"></i>Shipping</div>
           <div class="cov-row"><div><strong>Information</strong><small>Shipping policies and pricing</small></div><div class="cov-share"><b>60%</b><i style="--w:60%"></i></div><span class="cov-skill">Shipping to France</span><button class="cov-status on" type="button" aria-pressed="true">AI allowed</button></div>
           <div class="cov-row"><div><strong>Change address</strong><small>Update a delivery address</small></div><div class="cov-share"><b>&ndash;</b></div><button class="cov-link" type="button" data-skill-name="Update my delivery address">Link to skill</button><button class="cov-status on" type="button" aria-pressed="true">AI allowed</button></div>
-          <div class="cov-group">Order</div>
+          <div class="cov-group"><i class="ic sm" data-icon="chevron"></i>Order</div>
           <div class="cov-row"><div><strong>Status</strong><small>Order status and tracking</small></div><div class="cov-share"><b>40%</b><i style="--w:40%"></i></div><button class="cov-link" type="button" data-skill-name="Check order status">Link to skill</button><button class="cov-status on" type="button" aria-pressed="true">AI allowed</button></div>
           <div class="cov-row"><div><strong>Damaged</strong><small>Broken items received</small></div><div class="cov-share"><b>&ndash;</b></div><button class="cov-link" type="button" data-skill-name="Lost package">Link to skill</button><button class="cov-status" type="button" aria-pressed="false">Handover</button></div>
         </div>
@@ -430,6 +412,35 @@
         </div>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── Customer logos ─────────────────────────
+     Logos come from the Gorgias customer logo library (Figma). PMM confirms the final set. -->
+<section class="logos" aria-labelledby="logos-title">
+  <div class="logos-head rise">
+    <p class="kicker">Trusted by</p>
+    <h2 class="display logos-title" id="logos-title">Leading ecommerce brands</h2>
+  </div>
+  <div class="logo-track" data-logos>
+    <ul class="logo-row">
+      <li class="lg"><img src="assets/v4/logos/tommy-john.png" alt="Tommy John" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/tushy.png" alt="Tushy" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/suitshop.png" alt="SuitShop" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/arcteryx.png" alt="Arc'teryx" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/timbuk2.png" alt="Timbuk2" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/bareminerals.png" alt="bareMinerals" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/billabong.png" alt="Billabong" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/dr-bronners.png" alt="Dr. Bronner's" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/orthofeet.png" alt="OrthoFeet" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/osea.png" alt="Osea" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/comfrt.png" alt="Comfrt" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/perfect-ted.png" alt="Perfect Ted" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/castore.png" alt="Castore" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/ana-luisa.png" alt="Ana Luisa" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/alice-olivia.png" alt="Alice + Olivia" loading="lazy"></li>
+      <li class="lg"><img src="assets/v4/logos/mizzen-main.png" alt="Mizzen+Main" loading="lazy"></li>
+    </ul>
   </div>
 </section>
 
