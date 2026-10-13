@@ -262,8 +262,8 @@ html.is-dragging, html.is-dragging * { -webkit-user-select: none !important; use
 .quote figcaption { margin-top: 28px; display: flex; flex-direction: column; gap: 2px; font-size: 15px; }
 .quote figcaption span { font-size: 13px; color: var(--n600); }
 
-/* Free trial: a full-width photo band with a glass card on top */
-.trial-band { padding: 80px 24px; background: var(--coral-200) url("assets/v4/trial-mountains.webp") center / cover no-repeat; }
+/* Free trial: a full-width static blue band with a glass card on top */
+.trial-band { padding: 80px 24px; background: #d1e9fc; }
 .trial { max-width: 880px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 28px 32px; border-radius: 24px;
   background: rgba(252, 250, 248, .85); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .55), 0 18px 40px -24px rgba(27, 26, 25, .35); }
@@ -339,10 +339,12 @@ input[type=range]:focus-visible { box-shadow: 0 0 0 3px #1981d1; }
 @keyframes pop { from { transform: scale(.3); opacity: 0; } to { transform: none; opacity: 1; } }
 .ob-bar { height: 6px; border-radius: 99px; background: var(--n50); margin-top: 12px; overflow: hidden; }
 .ob-bar span { display: block; height: 100%; width: 0; background: var(--n950); border-radius: 99px; transition: width .7s var(--ease-out); }
-.card.hub { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 32px; padding: 40px; border-radius: 24px; border: 0; background: var(--coral-200) url("assets/v4/hub-bloom.webp") center / cover no-repeat; }
-.hub-copy { max-width: 672px; }
+/* Gaia Hub (Figma 172:7730): copy on the left, the glass screen on the right */
+.card.hub { grid-column: 1 / -1; display: flex; align-items: center; gap: 32px; padding: 40px; border-radius: 24px; border: 0; background: var(--coral-200) url("assets/v4/hub-bloom.webp") center / cover no-repeat; }
+.hub-copy { flex: 0 1 398px; }
+.hub-copy .h3 { text-wrap: wrap; }
 .hub-copy > p { max-width: none; }
-.hub-screen { position: relative; border-radius: 24px; padding: 32px; display: flex; flex-direction: column; align-items: center; gap: 44px; background: rgba(252, 252, 251, .78); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .6); }
+.hub-screen { flex: 1 1 690px; position: relative; border-radius: 24px; padding: 32px; display: flex; flex-direction: column; align-items: center; background: rgba(252, 252, 251, .78); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .6); }
 .hub-metrics { display: flex; gap: 48px; }
 .hub-metrics div { display: flex; flex-direction: column; gap: 4px; }
 .hub-metrics span { font-size: 12px; letter-spacing: .01em; color: var(--n600); }
@@ -350,18 +352,18 @@ input[type=range]:focus-visible { box-shadow: 0 0 0 3px #1981d1; }
 .hub-metrics i { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 500; font-style: normal; }
 .hub-metrics i svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 .hub-metrics .up { color: #147656; } .hub-metrics .down { color: #d90b28; }
-.hub-welcome { text-align: center; display: flex; flex-direction: column; gap: 6px; margin: -8px 0 -16px; }
+.hub-welcome { text-align: center; display: flex; flex-direction: column; gap: 6px; margin-top: 64px; }
 .hub-welcome span { font-size: 18px; color: var(--n700); letter-spacing: .02em; }
 .hub-welcome strong { font-weight: 400; font-size: 24px; letter-spacing: .02em; }
-.hub-prompt { width: min(100%, 600px); background: rgba(255, 255, 255, .8); border: 1px solid var(--n100); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; min-height: 100px; box-shadow: 0 2px 8px rgba(0, 0, 0, .04); }
+.hub-prompt { width: 100%; margin-top: 32px; background: rgba(255, 255, 255, .8); border: 1px solid var(--n100); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between; min-height: 100px; box-shadow: 0 2px 8px rgba(0, 0, 0, .04); }
 .hub-ph { font-size: 14px; color: var(--n400); }
 .hub-prompt-bar { display: flex; justify-content: space-between; align-items: center; }
 .hub-act { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; font-weight: 600; color: var(--n800); }
 .hub-act .ic.sm svg { width: 14px; height: 14px; }
 .hub-send svg { stroke: var(--n300); }
-.hub-quick { position: relative; width: min(100%, 600px); min-height: 124px; margin-top: -28px; }
+.hub-quick { position: relative; width: 100%; margin-top: 16px; }
 .hub-btns { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
-.hub-btns button { display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 12px 0 8px; border-radius: 8px; background: #fff; border: 1px solid var(--n400); font-size: 14px; font-weight: 600; transition: background .2s, border-color .2s, transform .2s var(--ease-out); }
+.hub-btns button { display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 12px 0 8px; border-radius: 8px; background: rgba(255, 255, 255, .5); border: 1px solid var(--n400); font-size: 14px; font-weight: 600; transition: background .2s, border-color .2s, transform .2s var(--ease-out); }
 .hub-btns button .ic.sm svg { width: 16px; height: 16px; }
 .hub-btns button:hover, .hub-btns button.hover { background: var(--n20); border-color: var(--n600); }
 .hub-btns button[aria-pressed=true] { background: var(--n950); color: var(--n10); border-color: var(--n950); }
@@ -373,9 +375,12 @@ input[type=range]:focus-visible { box-shadow: 0 0 0 3px #1981d1; }
 .hub-cursor { position: absolute; left: 0; top: 0; width: 22px; height: 22px; z-index: 4; pointer-events: none; opacity: 0; transform: translate(var(--cx, 0px), var(--cy, 0px)); transition: transform .7s var(--ease-in-out), opacity .4s; filter: drop-shadow(0 2px 3px rgba(27, 26, 25, .25)); }
 .hub-cursor.on { opacity: 1; }
 .hub-cursor.press { transition-duration: .12s, .4s; transform: translate(var(--cx, 0px), var(--cy, 0px)) scale(.86); }
-.hub-screen .opps { width: min(100%, 900px); background: transparent; padding: 0; border-radius: 0; margin-top: -8px; }
-.hub-screen .opp-card { background: #fcfcfb; }
+/* The dropdown floats over the opportunities, as in Figma */
+.hub-screen .opps { width: 100%; background: transparent; padding: 0; border-radius: 0; margin-top: 48px; gap: 0; }
+.hub-screen .opps-list { margin-top: 24px; gap: 24px; }
+.hub-screen .opp-card { background: rgba(252, 252, 251, .8); }
 .opps-sub { font-size: 12px; color: var(--n600); margin-top: -6px; }
+.hub-screen .opps-sub { margin-top: 6px; }
 
 /* Gaia Hub opportunities (the product card, in light mode) */
 .opps { background: var(--n10); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
@@ -551,6 +556,10 @@ html.js .rise.in { opacity: 1; transform: none; transition: opacity .8s var(--ea
   .copy-col { max-width: 640px; }
   .chan-grid { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; row-gap: 56px; }
   .hub-metrics { gap: 28px; }
+  .card.hub { flex-direction: column; align-items: stretch; }
+  .hub-copy { flex: none; max-width: 672px; }
+  .hub-screen { flex: none; }
+  .hub-prompt, .hub-quick { width: min(100%, 600px); }
   .tone-split { grid-template-columns: 1fr; }
   .tone-wrap { margin-top: 56px; }
   .tone-face { left: -12px; top: -64px; width: 112px; height: 112px; }
@@ -574,7 +583,7 @@ html.js .rise.in { opacity: 1; transform: none; transition: opacity .8s var(--ea
   .trial { flex-direction: column; align-items: flex-start; gap: 20px; padding: 24px; }
   .opp-card { padding: 16px; }
   .card.hub { padding: 20px 16px; gap: 24px; }
-  .hub-screen { padding: 20px 14px; gap: 28px; }
+  .hub-screen { padding: 20px 14px; }
   /* Three stats on one line: smaller type, labels truncate before they wrap */
   .hub-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: 100%; }
   .hub-metrics div { min-width: 0; gap: 2px; }
@@ -582,12 +591,12 @@ html.js .rise.in { opacity: 1; transform: none; transition: opacity .8s var(--ea
   .hub-metrics b { font-size: 13px; gap: 2px 5px; white-space: nowrap; flex-wrap: wrap; }
   .hub-metrics i { font-size: 10.5px; }
   .hub-metrics i svg { width: 10px; height: 10px; }
-  .hub-welcome { gap: 4px; margin: -4px 0 -10px; }
+  .hub-welcome { gap: 4px; margin-top: 24px; }
   .hub-welcome span { font-size: 15px; }
   .hub-welcome strong { font-size: 20px; }
-  .hub-prompt { min-height: 84px; padding: 10px 12px; }
+  .hub-prompt { min-height: 84px; padding: 10px 12px; margin-top: 18px; }
   .hub-ph { font-size: 13px; }
-  .hub-quick { min-height: 0; margin-top: -12px; }
+  .hub-quick { margin-top: 16px; }
   .hub-btns { gap: 8px; }
   .hub-btns button { height: 30px; font-size: 13px; padding: 0 10px 0 7px; }
   .hub-btns button .ic.sm svg { width: 14px; height: 14px; }
@@ -595,7 +604,8 @@ html.js .rise.in { opacity: 1; transform: none; transition: opacity .8s var(--ea
   .hub-menu { position: static; width: 100%; margin-top: 8px; min-width: 0; }
   .hub-menu li { white-space: normal; font-size: 13px; line-height: 1.3; padding: 7px 10px; }
   .hub-cursor { display: none; }
-  .hub-screen .opps { margin-top: -4px; }
+  .hub-screen .opps { margin-top: 24px; }
+  .hub-screen .opps-list { margin-top: 16px; gap: 12px; }
   .opps-sub { font-size: 11.5px; }
   .hub-screen .opp-text strong { font-size: 13.5px; }
   .hub-screen .opp-btns { gap: 5px; }

@@ -1,6 +1,6 @@
 # AI Agent fall launch page
 
-A design concept for the Gorgias AI Agent fall 2026 launch page. It announces AI Agent on WhatsApp, Instagram and Facebook, with a free 30-day trial, then covers Tone of Voice, Gaia, Helpdesk Performance analytics, Actions in Skills and the "More like this" button.
+A design concept for the Gorgias AI Agent fall 2026 launch page. It announces AI Agent on WhatsApp, Instagram and Facebook, with a free 30-day trial, then covers Tone of Voice, Gaia, Actions in Skills with the "More like this" button, and Helpdesk Performance analytics.
 
 The page comes in four versions, with a switcher bar at the top of each:
 
