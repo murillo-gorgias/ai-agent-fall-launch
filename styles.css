@@ -203,7 +203,7 @@ html.js [data-chat] > .show { opacity: 1; transform: none; transition: opacity .
 
 .stage-wrap .floater { z-index: 3; }
 
-/* ─── Customer logos (Figma 163:1992): a heading, then tiles on a slow marquee ─── */
+/* ─── Customer logos (Figma 163:1992), after the trial band: a heading, then 21 logos on a slow marquee ─── */
 .logos { padding: 80px 0; text-align: center; background: var(--n0); overflow: hidden; }
 .logos-head { display: flex; flex-direction: column; gap: 4px; align-items: center; margin-bottom: 48px; }
 .logos-head .kicker { color: var(--n600); }
@@ -213,7 +213,7 @@ html.js [data-chat] > .show { opacity: 1; transform: none; transition: opacity .
 .logo-track:hover .logo-row { animation-play-state: paused; }
 @keyframes marquee { to { transform: translateX(-50%); } }
 .lg { width: 208px; height: 73px; display: grid; place-items: center; padding: 14px 48px; flex: none; }
-.lg img { max-width: 112px; max-height: 45px; width: auto; height: auto; }
+.lg img { max-width: 112px; max-height: 40px; width: auto; height: auto; }
 
 /* ─── Divider row ─── */
 .divider { display: flex; justify-content: center; gap: clamp(8px, 2.4vw, 30px); padding: 40px 16px; flex-wrap: wrap; }
@@ -628,6 +628,5 @@ html.js .rise.in { opacity: 1; transform: none; transition: opacity .8s var(--ea
   html.js .rise, html.js [data-chat] > *, html.js [data-rv] { opacity: 1; transform: none; }
   .mlt-row .p-card { opacity: 1; transform: none; }
   .logo-row { animation: none; flex-wrap: wrap; width: auto; justify-content: center; row-gap: 16px; padding: 0 24px; }
-  .logo-row > li:nth-child(n+17) { display: none; }
   .hub-cursor { display: none; }
 }
